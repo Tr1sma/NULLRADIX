@@ -1,0 +1,22 @@
+{
+  "name": "nullradix",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NULLRADIX — developer portfolio. ORIGIN // (0,0).",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.2.0",
+    "vite": "^7.0.0"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.1.0",
+    "@fontsource-variable/jetbrains-mono": "^5.1.0",
+    "@fontsource-variable/space-grotesk": "^5.1.0",
+    "lenis": "^1.3.1"
+  }
+}

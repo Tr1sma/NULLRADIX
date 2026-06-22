@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0A0B0D" />
+
+    <title>NULLRADIX — Developer Portfolio</title>
+    <meta
+      name="description"
+      content="NULLRADIX — a developer portfolio plotted from (0,0). Apps, projects, skills and experience on a coordinate plane."
+    />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="NULLRADIX — Developer Portfolio" />
+    <meta
+      property="og:description"
+      content="A developer portfolio plotted from (0,0). Apps, projects, skills and experience."
+    />
+    <meta property="og:image" content="/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="module" src="/src/main.js"></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- Decorative coordinate field (progressive enhancement) -->
+    <canvas id="field" aria-hidden="true"></canvas>
+
+    <header class="site-header" data-header>
+      <a class="wordmark wordmark--small" href="#origin" aria-label="NULLRADIX — home">
+        <span class="wordmark__text">NULLRADIX</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#work">Work</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <!-- ORIGIN / hero -->
+      <section id="origin" class="hero" aria-labelledby="origin-h">
+        <div class="hero__inner">
+          <p class="eyebrow" data-reveal>
+            <span class="eyebrow__mark">●</span> base zero · the origin
+          </p>
+          <h1 id="origin-h" class="wordmark wordmark--hero" data-reveal>
+            <span class="wordmark__text">NULLRADIX</span>
+          </h1>
+          <p class="hero__role" data-profile-role data-reveal>Developer</p>
+          <p class="hero__tagline" data-profile-tagline data-reveal>
+            Plotting systems from&nbsp;(0,0).
+          </p>
+          <div class="hero__cta" data-reveal>
+            <a class="btn btn--primary" href="#work">View work</a>
+            <a class="btn" href="#contact">Get in touch</a>
+          </div>
+          <p class="hero__coord mono" aria-hidden="true">origin · (0, 0)</p>
+        </div>
+        <p class="scroll-cue mono" aria-hidden="true">scroll&nbsp;↑&nbsp;travel&nbsp;+Y</p>
+      </section>
+
+      <!-- WORK -->
+      <section id="work" class="section work" aria-labelledby="work-h">
+        <div class="section__head" data-reveal>
+          <p class="eyebrow mono">01.00 — region: work</p>
+          <h2 id="work-h" class="section__title">Selected work</h2>
+          <p class="section__lead">
+            Each project is plotted on the plane — <span class="mono">x = domain</span>,
+            <span class="mono">y = year</span>. Hover a node, or read the list.
+          </p>
+        </div>
+
+        <!-- Canonical, accessible list. Rendered from src/data/content.js. -->
+        <ul class="project-list" id="project-list" data-projects>
+          <!-- JS fills this. -->
+        </ul>
+
+        <!-- Plotted overlay (progressive enhancement). JS appends nodes here. -->
+        <div class="plot" id="plot" aria-hidden="true" data-plot></div>
+      </section>
+
+      <!-- SKILLS & EXPERIENCE -->
+      <section id="skills" class="section skills" aria-labelledby="skills-h">
+        <div class="section__head" data-reveal>
+          <p class="eyebrow mono">02.00 — region: capability</p>
+          <h2 id="skills-h" class="section__title">Skills &amp; experience</h2>
+        </div>
+
+        <div class="skills__grid" id="skills-groups" data-skills>
+          <!-- JS fills skill groups. -->
+        </div>
+
+        <ol class="timeline" id="experience-timeline" data-experience>
+          <!-- JS fills experience entries. -->
+        </ol>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="section contact" aria-labelledby="contact-h">
+        <div class="section__head" data-reveal>
+          <p class="eyebrow mono">03.00 — region: contact</p>
+          <h2 id="contact-h" class="section__title">Let's plot something</h2>
+        </div>
+        <div class="contact__body" data-reveal>
+          <a class="contact__email" href="mailto:you@example.com" data-profile-email>
+            you@example.com
+          </a>
+          <button class="btn btn--ghost" type="button" data-copy-email>Copy email</button>
+          <ul class="socials" id="socials" data-socials>
+            <!-- JS fills socials. -->
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span class="wordmark__text mono">NULLRADIX</span>
+      <span class="mono">built at (0,0) · <span data-year>2026</span></span>
+    </footer>
+
+    <!-- Detail panel (project) -->
+    <div class="panel" id="panel" data-panel hidden role="dialog" aria-modal="true" aria-labelledby="panel-title">
+      <div class="panel__backdrop" data-panel-close></div>
+      <article class="panel__card" tabindex="-1" data-panel-card>
+        <button class="panel__close" type="button" aria-label="Close" data-panel-close>×</button>
+        <p class="panel__coord mono" data-panel-coord></p>
+        <h3 class="panel__title" id="panel-title" data-panel-title></h3>
+        <p class="panel__year mono" data-panel-year></p>
+        <p class="panel__blurb" data-panel-blurb></p>
+        <ul class="tags" data-panel-tech></ul>
+        <div class="panel__links" data-panel-links></div>
+      </article>
+    </div>
+
+    <!-- Live coordinate readout -->
+    <output id="hud" class="hud mono" role="status" aria-live="off">x:+000.0  y:+000.0</output>
+
+    <noscript>
+      <style>
+        .project-list:empty::after { content: "Enable JavaScript to load projects, or contact me directly."; color: #E8EBF0; display: block; padding: 1rem 0; }
+      </style>
+    </noscript>
+  </body>
+</html>
