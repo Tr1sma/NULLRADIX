@@ -1,37 +1,26 @@
 import './styles/index.css';
 
-// self-hosted variable fonts (latin subset fetched via unicode-range)
-import '@fontsource-variable/space-grotesk';
+// self-hosted variable fonts
+import '@fontsource-variable/roboto-flex/full.css'; // wght + wdth + opsz axes
 import '@fontsource-variable/inter';
-import '@fontsource-variable/jetbrains-mono';
+import '@fontsource-variable/space-grotesk';
 
-import { qs } from './utils/dom.js';
 import { renderSections } from './modules/sections.js';
 import { renderProjects } from './modules/projects.js';
-import { renderNodes } from './modules/nodes.js';
 import { createPanel } from './modules/panel.js';
-import { initReveal } from './modules/reveal.js';
-import { initNav } from './modules/nav.js';
+import { initTypo } from './modules/typo.js';
 import { initScroll } from './modules/scroll.js';
-import { createField } from './field/field.js';
+import { initNav } from './modules/nav.js';
 
 function boot() {
   renderSections();
 
   const panel = createPanel();
-  const projectsCtrl = renderProjects(panel);
-  renderNodes(projectsCtrl, panel);
+  renderProjects(panel);
 
-  initReveal();
+  initTypo();
   initNav();
   initScroll();
-
-  const canvas = qs('#field');
-  const hud = qs('#hud');
-  if (canvas && hud) {
-    const field = createField(canvas, hud);
-    field.mount();
-  }
 }
 
 if (document.readyState === 'loading') {

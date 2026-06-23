@@ -1,99 +1,80 @@
 /**
- * NULLRADIX — single source of truth.
- * Edit THIS file to update the whole site. The accessible list and the
- * plotted coordinate view both read from the same arrays below.
- *
- * coord: normalized position on the plane, each axis roughly -100..100.
- *        x ~ domain/category, y ~ recency. Only used for the plotted view.
+ * NULLRADIX — single source of truth for content.
+ * Edit this file to update the site. (The hero headline + subline live in
+ * index.html since they're the one piece of brand copy.)
  */
 
 export const profile = {
   name: 'NULLRADIX',
-  role: 'Software Developer',
-  tagline: 'Plotting systems from (0,0).',
+  role: 'Developer',
+  status: 'Available for work',
   email: 'you@example.com',
 };
 
 /**
  * @typedef {Object} Project
- * @property {string} id      stable slug
+ * @property {string} id
  * @property {string} name
- * @property {string} blurb   one or two sentences
+ * @property {string} blurb
  * @property {string[]} tech
  * @property {number} year
  * @property {'live'|'wip'|'archived'} [status]
- * @property {{x:number,y:number}} coord  normalized -100..100
  * @property {{live?:string,repo?:string,docs?:string}} links
  */
 
 /** @type {Project[]} */
 export const projects = [
   {
-    id: 'forge',
-    name: 'Forge',
-    blurb: 'A desktop tool that turns rough ideas into shippable scaffolds in seconds.',
-    tech: ['TypeScript', 'Electron', 'Vite'],
+    id: 'ledger-engine',
+    name: 'Ledger Engine',
+    blurb: 'A double-entry accounting core that stays correct under load — fast, auditable, hard to misuse.',
+    tech: ['TypeScript', 'Go', 'Postgres'],
     year: 2025,
     status: 'live',
-    coord: { x: -58, y: 64 },
-    links: { live: 'https://example.com', repo: 'https://github.com/you/forge' },
+    links: { live: 'https://example.com', repo: 'https://github.com/you/ledger-engine' },
   },
   {
-    id: 'pulse',
-    name: 'Pulse',
-    blurb: 'Real-time analytics dashboard with sub-100ms streaming updates.',
-    tech: ['Rust', 'WebSockets', 'Canvas'],
-    year: 2025,
-    status: 'live',
-    coord: { x: 46, y: 52 },
-    links: { live: 'https://example.com', repo: 'https://github.com/you/pulse' },
-  },
-  {
-    id: 'atlas',
-    name: 'Atlas',
-    blurb: 'Offline-first mobile app for mapping field data without a connection.',
-    tech: ['React Native', 'SQLite', 'MapLibre'],
+    id: 'tide',
+    name: 'Tide',
+    blurb: 'A tiny tool that turns messy CSV exports into clean, typed datasets in one drag.',
+    tech: ['Rust', 'WASM', 'Vite'],
     year: 2024,
     status: 'live',
-    coord: { x: -30, y: 8 },
-    links: { live: 'https://example.com', repo: 'https://github.com/you/atlas' },
+    links: { live: 'https://example.com', repo: 'https://github.com/you/tide' },
   },
   {
-    id: 'cipher',
-    name: 'Cipher',
-    blurb: 'A zero-dependency client-side encryption playground and teaching tool.',
-    tech: ['JavaScript', 'WebCrypto'],
-    year: 2024,
-    status: 'wip',
-    coord: { x: 70, y: -16 },
-    links: { repo: 'https://github.com/you/cipher' },
-  },
-  {
-    id: 'nullradix',
-    name: 'nullradix.dev',
-    blurb: 'This site — a portfolio that behaves like a graphing instrument.',
-    tech: ['Vanilla JS', 'Canvas', 'Vite'],
-    year: 2026,
+    id: 'quiet-hours',
+    name: 'Quiet Hours',
+    blurb: 'A focus app that protects your deep-work time and gets out of the way.',
+    tech: ['Swift', 'SwiftUI'],
+    year: 2023,
     status: 'live',
-    coord: { x: 0, y: 88 },
-    links: { repo: 'https://github.com/you/nullradix' },
+    links: { live: 'https://example.com' },
   },
   {
     id: 'relay',
     name: 'Relay',
-    blurb: 'Self-hosted webhook router with a visual rule builder.',
+    blurb: 'Self-hosted webhook router with a visual rule builder and replayable history.',
     tech: ['Go', 'Postgres', 'htmx'],
     year: 2023,
     status: 'archived',
-    coord: { x: 24, y: -64 },
     links: { repo: 'https://github.com/you/relay' },
+  },
+  {
+    id: 'nullradix',
+    name: 'nullradix.dev',
+    blurb: 'This site — kinetic type, monochrome, built from scratch with no UI framework.',
+    tech: ['Vanilla JS', 'GSAP', 'Vite'],
+    year: 2026,
+    status: 'wip',
+    links: { repo: 'https://github.com/you/nullradix' },
   },
 ];
 
 /** @type {{group:string, items:string[]}[]} */
 export const skills = [
   { group: 'Languages', items: ['TypeScript', 'Rust', 'Go', 'Python'] },
-  { group: 'Frontend', items: ['Vanilla JS', 'CSS', 'Canvas / WebGL', 'React'] },
+  { group: 'Frontend', items: ['Vanilla JS', 'CSS', 'GSAP', 'React'] },
   { group: 'Backend', items: ['Node', 'Postgres', 'Redis', 'REST / WS'] },
   { group: 'Tooling', items: ['Vite', 'Git', 'Docker', 'CI/CD'] },
 ];
@@ -105,15 +86,15 @@ export const experience = [
     role: 'Senior Developer',
     from: '2023',
     to: 'Present',
-    summary: 'Lead frontend architecture for a real-time data product used by thousands.',
-    tech: ['TypeScript', 'Rust', 'Canvas'],
+    summary: 'Lead frontend architecture for a real-time product used by thousands every day.',
+    tech: ['TypeScript', 'Rust'],
   },
   {
     org: 'Studio North',
     role: 'Full-stack Developer',
     from: '2021',
     to: '2023',
-    summary: 'Built and shipped client apps end to end, from API to interface.',
+    summary: 'Built and shipped client apps end to end, from API design to the last pixel.',
     tech: ['Node', 'React', 'Postgres'],
   },
   {
@@ -122,7 +103,7 @@ export const experience = [
     from: '2019',
     to: '2021',
     summary: 'Designed and delivered small products for early-stage founders.',
-    tech: ['JavaScript', 'PHP'],
+    tech: ['JavaScript'],
   },
 ];
 

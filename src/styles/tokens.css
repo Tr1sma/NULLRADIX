@@ -1,31 +1,28 @@
 :root {
-  /* ---- palette ---- */
-  --c-void: #0a0b0d; /* background */
-  --c-plane: #101216; /* surfaces / panels */
-  --c-grid: #1c2026; /* gridlines / borders */
-  --c-graphite: #5b6470; /* lines / decoration only (fails AA for text) */
-  --c-paper: #e8ebf0; /* primary text */
-  --c-origin: #36f1cd; /* single accent */
+  /* ---- monochrome palette (dark) ---- */
+  --c-void: #0c0c0d; /* page background */
+  --c-surface: #131315; /* cards / panels */
+  --c-line: #242428; /* hairlines / borders */
+  --c-ghost: #121214; /* giant background wordmark */
+  --c-far: #46464b; /* dim / tertiary text */
+  --c-mid: #84848b; /* secondary text */
+  --c-near: #fafafb; /* primary text */
+  --c-muted: color-mix(in oklab, var(--c-near) 60%, var(--c-void)); /* AA body secondary */
 
-  --c-muted: color-mix(in oklab, var(--c-paper) 68%, var(--c-void)); /* AA-safe secondary text */
-  --c-origin-dim: color-mix(in oklab, var(--c-origin) 45%, var(--c-void));
-  --c-origin-glow: color-mix(in oklab, var(--c-origin) 22%, transparent);
-  --c-plane-2: color-mix(in oklab, var(--c-plane) 70%, var(--c-paper) 4%);
-
-  /* ---- type families ---- */
-  --ff-display: 'Space Grotesk Variable', system-ui, sans-serif;
+  /* ---- type ---- */
+  --ff-display: 'Roboto Flex Variable', system-ui, sans-serif;
   --ff-body: 'Inter Variable', system-ui, sans-serif;
-  --ff-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
+  --ff-label: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
 
-  /* ---- fluid type scale (~1.25) ---- */
-  --fs-100: clamp(0.74rem, 0.7rem + 0.2vw, 0.82rem); /* mono / captions */
-  --fs-200: clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem); /* body */
-  --fs-300: clamp(1.15rem, 1rem + 0.6vw, 1.4rem);
-  --fs-400: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem); /* h2 */
-  --fs-500: clamp(2.2rem, 1.6rem + 2.6vw, 3.6rem);
-  --fs-700: clamp(2.8rem, 1.4rem + 6.5vw, 7.5rem); /* hero wordmark */
+  /* fluid scale */
+  --fs-100: clamp(0.72rem, 0.68rem + 0.2vw, 0.8rem); /* labels */
+  --fs-200: clamp(0.95rem, 0.9rem + 0.25vw, 1.06rem); /* body */
+  --fs-300: clamp(1.1rem, 0.95rem + 0.7vw, 1.5rem);
+  --fs-400: clamp(1.6rem, 1.1rem + 2vw, 2.6rem); /* h2 */
+  --fs-600: clamp(2.2rem, 1.2rem + 4vw, 4rem); /* big project numbers / contact */
+  --fs-hero: clamp(2.8rem, 0.5rem + 11vw, 9rem); /* hero headline */
 
-  /* ---- spacing (8px base) ---- */
+  /* spacing (8px) */
   --sp-1: 0.25rem;
   --sp-2: 0.5rem;
   --sp-3: 0.75rem;
@@ -37,29 +34,27 @@
   --sp-24: 6rem;
   --sp-32: 8rem;
 
-  /* ---- layout ---- */
-  --measure: 60ch;
-  --container: 74rem;
-  --gutter: clamp(1.25rem, 5vw, 4rem);
-  --radius: 4px;
-  --border: 1px solid var(--c-grid);
-  --hairline: 1px solid color-mix(in oklab, var(--c-grid) 70%, transparent);
+  /* layout */
+  --container: 76rem;
+  --measure: 46ch;
+  --gutter: clamp(1.25rem, 6vw, 4.5rem);
+  --radius: 6px;
+  --hairline: 1px solid var(--c-line);
 
-  /* ---- z-index ---- */
-  --z-field: 0;
-  --z-base: 1;
-  --z-nodes: 5;
+  /* z */
+  --z-ghost: 0;
+  --z-grain: 1;
+  --z-base: 2;
   --z-header: 50;
-  --z-hud: 60;
   --z-panel: 90;
   --z-skip: 100;
 
-  /* ---- motion ---- */
-  --dur-fast: 130ms;
-  --dur: 280ms;
-  --dur-slow: 620ms;
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* motion */
+  --dur-fast: 200ms;
+  --dur: 420ms;
+  --dur-slow: 900ms;
+  --ease: cubic-bezier(0.2, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
