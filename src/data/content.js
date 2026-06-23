@@ -48,14 +48,18 @@ export const projects = [
     coord: { x: -12, y: -32 }, // small data/dev tool
   },
   {
-    id: 'quiet-hours',
-    name: 'Quiet Hours',
-    blurb: 'A focus app that protects your deep-work time and gets out of the way.',
-    tech: ['Swift', 'SwiftUI'],
-    year: 2023,
+    id: 'bookheart',
+    name: 'BookHeart',
+    blurb:
+      'A cozy Android app for tracking, rating and gamifying your reading - virtual bookshelf, reading timer, streaks, plant-growing rewards and shareable stats, fully offline on the device.',
+    tech: ['C#', '.NET 10 MAUI', 'Blazor Hybrid', 'EF Core', 'SQLite'],
+    year: 2025,
     status: 'live',
-    links: { live: 'https://example.com' },
-    coord: { x: -60, y: 75 }, // polished frontend product
+    links: {
+      live: 'https://play.google.com/store/apps/details?id=com.bookheart.app',
+      repo: 'https://github.com/Tr1sma/BookLoggerApp',
+    },
+    coord: { x: -28, y: 68 }, // polished consumer mobile product (Frontend + Product quadrant)
   },
   {
     id: 'relay',
@@ -104,8 +108,8 @@ export const about = {
 export const skills = [
   { group: 'Languages', items: ['C#', 'JavaScript', 'SQL'] },
   { group: 'Backend', items: ['.NET 10', 'ASP.NET Core', 'EF Core', 'SignalR'] },
-  { group: 'Frontend', items: ['Blazor', 'Vanilla JS', 'CSS', 'GSAP'] },
-  { group: 'Data & Tools', items: ['MySQL / MariaDB', 'OAuth', 'Git', 'Vite'] },
+  { group: 'Frontend', items: ['Blazor', '.NET MAUI', 'Vanilla JS', 'CSS', 'GSAP'] },
+  { group: 'Data & Tools', items: ['MySQL / MariaDB', 'SQLite', 'OAuth', 'CI/CD', 'Git'] },
 ];
 
 /** @type {{org:string, role:string, from:string, to:string, summary:string, tech?:string[]}[]} */
