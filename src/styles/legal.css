@@ -1,0 +1,93 @@
+/* Legal pages (Impressum, Datenschutz). Reuses the site tokens + base, adds a
+   readable prose column. .footer-legal lives in layout.css (shared footer). */
+@import './index.css';
+
+.legal {
+  width: min(100% - calc(var(--gutter) * 2), var(--container));
+  margin-inline: auto;
+  /* clear the fixed header */
+  padding-block: clamp(var(--sp-24), 18vh, var(--sp-32)) var(--sp-16);
+}
+
+.legal__head {
+  margin-bottom: var(--sp-16);
+}
+.legal__title {
+  font-family: var(--ff-display);
+  font-size: var(--fs-400);
+  margin-top: var(--sp-4);
+  color: var(--c-near);
+  font-variation-settings: 'wght' 600, 'wdth' 90;
+}
+
+.legal__body {
+  max-width: 64ch;
+}
+.legal__body > * + * {
+  margin-top: var(--sp-4);
+}
+.legal__body h2 {
+  font-family: var(--ff-label);
+  font-size: var(--fs-100);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-mid);
+  margin-top: var(--sp-12);
+}
+.legal__body h2:first-child {
+  margin-top: 0;
+}
+.legal__body p,
+.legal__body li {
+  color: var(--c-muted);
+  font-size: var(--fs-200);
+  line-height: 1.7;
+}
+.legal__body address {
+  font-style: normal;
+  color: var(--c-near);
+  white-space: pre-line; /* keep the line breaks typed in the markup */
+}
+.legal__body a {
+  color: var(--c-near);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--c-line);
+  transition: text-decoration-color var(--dur-fast) var(--ease);
+}
+.legal__body a:hover,
+.legal__body a:focus-visible {
+  text-decoration-color: var(--c-near);
+}
+.legal__body ul {
+  list-style: none;
+  padding: 0;
+}
+.legal__body ul li {
+  position: relative;
+  padding-left: var(--sp-6);
+}
+.legal__body ul li::before {
+  content: '·';
+  position: absolute;
+  left: var(--sp-2);
+  color: var(--c-far);
+}
+.legal__updated {
+  margin-top: var(--sp-16);
+  font-family: var(--ff-label);
+  font-size: var(--fs-100);
+  letter-spacing: 0.1em;
+  color: var(--c-far);
+}
+
+/* placeholder marker — fill these in, then remove the highlight class.
+   Easy to grep for: search the codebase for "legal-todo". */
+.legal-todo {
+  color: var(--c-void);
+  background: var(--c-near);
+  padding: 0 0.35em;
+  border-radius: 3px;
+  font-family: var(--ff-label);
+  font-size: 0.9em;
+}

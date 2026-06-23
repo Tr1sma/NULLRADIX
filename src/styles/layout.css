@@ -148,12 +148,25 @@
   align-items: baseline;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: var(--sp-4);
+  gap: var(--sp-4) var(--sp-8);
   padding: var(--sp-16) var(--gutter) var(--sp-24);
   border-top: var(--hairline);
   color: var(--c-mid);
   font-family: var(--ff-label);
   font-size: var(--fs-100);
+}
+.footer-legal {
+  display: flex;
+  gap: var(--sp-6);
+  letter-spacing: 0.08em;
+}
+.footer-legal a {
+  color: var(--c-mid);
+  transition: color var(--dur-fast) var(--ease);
+}
+.footer-legal a:hover,
+.footer-legal a:focus-visible {
+  color: var(--c-near);
 }
 
 /* ---- skills grid ---- */
