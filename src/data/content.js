@@ -73,12 +73,13 @@ export const projects = [
   },
   {
     id: 'nullradix',
-    name: 'nullradix.dev',
-    blurb: 'This site - kinetic type, monochrome, built from scratch with no UI framework.',
-    tech: ['Vanilla JS', 'GSAP', 'Vite'],
+    name: 'NULLRADIX',
+    blurb:
+      'This site - a monochrome portfolio that behaves like a graphing instrument: kinetic type, an interactive canvas coordinate field, built from scratch with no UI framework.',
+    tech: ['Vanilla JS', 'Canvas', 'GSAP', 'Vite'],
     year: 2026,
     status: 'wip',
-    links: { repo: 'https://github.com/you/nullradix' },
+    links: { repo: 'https://github.com/Tr1sma/NULLRADIX' },
     coord: { x: -80, y: 48 }, // frontend product (this site)
   },
 ];
@@ -144,7 +145,7 @@ export const experience = [
 export const socials = [
   { label: 'GitHub', href: 'https://github.com/Tr1sma', handle: '@Tr1sma' },
   { label: 'Fiverr', href: 'https://de.fiverr.com/tristan_sowieja', handle: '@tristan_sowieja' },
-  { label: 'X', href: 'https://x.com/you', handle: '@you' },
+  { label: 'Discord', href: 'https://discord.com/users/883419902843699250', handle: 'Tristan' },
 ];
 
 export default { profile, axes, about, projects, skills, experience, socials };
