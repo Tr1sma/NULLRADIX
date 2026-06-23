@@ -218,9 +218,6 @@
   color: var(--c-near);
   transform: translateX(14px);
 }
-.work-item__name {
-  white-space: nowrap; /* keep the scramble flourish on one line */
-}
 .work-item__title .arrow {
   opacity: 0;
   transform: translateX(-10px);

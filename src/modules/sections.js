@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { qs, qsa, el } from '../utils/dom.js';
 import { profile, about, skills, experience, socials } from '../data/content.js';
+import { createScramble } from '../utils/scramble.js';
 
 /** Fill the data-driven regions from content.js. */
 export function renderSections() {
@@ -50,7 +51,7 @@ export function renderSections() {
       ...experience.map((e) =>
         el('li', { class: 'timeline__item' }, [
           el('p', { class: 'timeline__range' }, `${e.from} - ${e.to}`),
-          el('p', { class: 'timeline__role' }, e.role),
+          el('p', { class: 'timeline__role' }, el('span', { class: 'timeline__role-name' }, e.role)),
           el('p', { class: 'timeline__org' }, e.org),
           el('p', { class: 'timeline__summary' }, e.summary),
           e.tech
@@ -99,6 +100,8 @@ function initTimelineDot(root) {
   const items = [...root.querySelectorAll('.timeline__item')];
   if (!items.length) return;
 
+  items.forEach((it) => (it._scramble = createScramble(it.querySelector('.timeline__role-name'))));
+
   const dot = el('span', { class: 'timeline__dot', 'aria-hidden': 'true' });
   root.appendChild(dot);
 
@@ -121,8 +124,13 @@ function initTimelineDot(root) {
     }
   }
 
-  moveTo(items[0]); // rest at the top entry
-  items.forEach((it) => it.addEventListener('pointerenter', () => moveTo(it)));
+  moveTo(items[0]); // rest at the top entry (no scramble on load - hover only)
+  items.forEach((it) =>
+    it.addEventListener('pointerenter', () => {
+      it._scramble?.play();
+      moveTo(it);
+    })
+  );
   addEventListener(
     'resize',
     () => {
