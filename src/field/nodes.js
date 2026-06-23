@@ -3,6 +3,8 @@
  * plane; a faint line ties it back to ORIGIN. Handles hit-testing for hover and
  * exposes each node's canvas position so the modal can grow out of it.
  */
+import { scrambleString, SCRAMBLE_MS } from '../utils/scramble.js';
+
 const PAD = 56; // inset from the edges so labels stay inside
 const HIT = 16; // node hover/click radius in px
 const LINE_HIT = 6; // how close to the ORIGIN connector counts as a hit
@@ -25,6 +27,8 @@ export function createNodes(projects) {
   let W = 0;
   let H = 0;
   let hovered = -1;
+  let scrambleFor = -1; // which node's label is mid-decode
+  let scrambleStart = 0;
 
   function layout(width, height) {
     W = width;
@@ -82,7 +86,18 @@ export function createNodes(projects) {
   }
 
   function setHovered(i) {
+    // kick off the decode flourish whenever a new label lights up; the field
+    // drives the frames (its rAF loop, or a short pump when not animating)
+    if (i >= 0 && i !== scrambleFor) {
+      scrambleFor = i;
+      scrambleStart = performance.now();
+    }
     hovered = i;
+  }
+
+  /** True while a label is mid-decode - lets the field pump frames in static modes. */
+  function isScrambling() {
+    return scrambleFor >= 0;
   }
 
   /** Canvas-space centre of node `i` (for the modal transform-origin). */
@@ -124,9 +139,18 @@ export function createNodes(projects) {
       ctx.textBaseline = 'middle';
       ctx.textAlign = right ? 'left' : 'right';
       const anchor = n.cx + (right ? 14 : -14);
-      ctx.fillText(n.project.name, anchor, n.cy);
 
-      // remember where the label sits so it's hoverable too (see hitTest)
+      // decode flourish: the freshly-hovered label flickers in left→right
+      let label = n.project.name;
+      if (n.i === scrambleFor) {
+        const t = (performance.now() - scrambleStart) / SCRAMBLE_MS;
+        if (t < 1) label = scrambleString(n.project.name, t);
+        else scrambleFor = -1;
+      }
+      ctx.fillText(label, anchor, n.cy);
+
+      // remember where the label sits so it's hoverable too (see hitTest) -
+      // measured on the final name so the hit box stays put during the scramble
       const w = ctx.measureText(n.project.name).width;
       n.labelBox = {
         x0: right ? anchor : anchor - w,
@@ -137,5 +161,5 @@ export function createNodes(projects) {
     }
   }
 
-  return { layout, hitTest, setHovered, pointOf, draw };
+  return { layout, hitTest, setHovered, isScrambling, pointOf, draw };
 }

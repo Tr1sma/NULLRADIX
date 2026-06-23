@@ -4,6 +4,7 @@ import { createLattice } from './particles.js';
 import { drawCrosshair } from './crosshair.js';
 import { createNodes } from './nodes.js';
 import { createHud } from './hud.js';
+import { SCRAMBLE_MS } from '../utils/scramble.js';
 
 const noop = () => ({ highlightNode() {}, clearNode() {}, destroy() {} });
 
@@ -38,6 +39,7 @@ export function renderField({ panel, projectsApi } = {}) {
 
   let rafLoop = 0;
   let rafOnce = 0;
+  let rafScramble = 0;
   let lastT = 0;
   let visible = true;
 
@@ -95,6 +97,20 @@ export function renderField({ panel, projectsApi } = {}) {
     });
   }
 
+  /**
+   * Drive a few frames so a label's decode flourish actually animates when the
+   * main rAF loop isn't running (low-motion / static / reduced-motion). No-op in
+   * animated mode - the loop already repaints every frame.
+   */
+  function pumpScramble() {
+    if (animated() || rafScramble) return;
+    const step = () => {
+      paint(false);
+      rafScramble = nodes.isScrambling() ? requestAnimationFrame(step) : 0;
+    };
+    rafScramble = requestAnimationFrame(step);
+  }
+
   // ---------- animated loop ----------
   function tick(t) {
     const dt = Math.min(0.033, lastT ? (t - lastT) / 1000 : 0.016);
@@ -126,7 +142,10 @@ export function renderField({ panel, projectsApi } = {}) {
       if (i >= 0) projectsApi?.highlight?.(i);
       else projectsApi?.clearHighlight?.();
     }
-    if (!animated()) renderOnce();
+    if (!animated()) {
+      if (i >= 0) pumpScramble();
+      else renderOnce();
+    }
   }
   function onMove(e) {
     const p = toLocal(e);
@@ -214,6 +233,7 @@ export function renderField({ panel, projectsApi } = {}) {
     destroy() {
       stopLoop();
       if (rafOnce) cancelAnimationFrame(rafOnce);
+      if (rafScramble) cancelAnimationFrame(rafScramble);
     },
   };
 }
