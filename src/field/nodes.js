@@ -4,7 +4,21 @@
  * exposes each node's canvas position so the modal can grow out of it.
  */
 const PAD = 56; // inset from the edges so labels stay inside
-const HIT = 16; // hover/click radius in px
+const HIT = 16; // node hover/click radius in px
+const LINE_HIT = 6; // how close to the ORIGIN connector counts as a hit
+const LABEL_PAD = 6; // forgiving margin around the name's hit box
+
+/** Squared distance from point to segment a→b, plus where along it the foot lands. */
+function segHit(px, py, ax, ay, bx, by) {
+  const vx = bx - ax;
+  const vy = by - ay;
+  const len2 = vx * vx + vy * vy || 1;
+  let t = ((px - ax) * vx + (py - ay) * vy) / len2;
+  t = t < 0 ? 0 : t > 1 ? 1 : t;
+  const dx = px - (ax + t * vx);
+  const dy = py - (ay + t * vy);
+  return { d2: dx * dx + dy * dy, t };
+}
 
 export function createNodes(projects) {
   let placed = [];
@@ -26,6 +40,7 @@ export function createNodes(projects) {
   }
 
   function hitTest(x, y) {
+    // 1) node point - the most precise target wins outright
     let best = -1;
     let bestD = HIT * HIT;
     for (const n of placed) {
@@ -37,7 +52,33 @@ export function createNodes(projects) {
         best = n.i;
       }
     }
-    return best;
+    if (best >= 0) return best;
+
+    // 2) the name label's box
+    for (const n of placed) {
+      const b = n.labelBox;
+      if (
+        b &&
+        x >= b.x0 - LABEL_PAD &&
+        x <= b.x1 + LABEL_PAD &&
+        y >= b.y0 - LABEL_PAD &&
+        y <= b.y1 + LABEL_PAD
+      ) {
+        return n.i;
+      }
+    }
+
+    // 3) the connector line back to ORIGIN (skip the crowded stub near the centre)
+    let lineBest = -1;
+    let lineBestD = LINE_HIT * LINE_HIT;
+    for (const n of placed) {
+      const { d2, t } = segHit(x, y, W / 2, H / 2, n.cx, n.cy);
+      if (t > 0.2 && d2 < lineBestD) {
+        lineBestD = d2;
+        lineBest = n.i;
+      }
+    }
+    return lineBest;
   }
 
   function setHovered(i) {
@@ -82,7 +123,17 @@ export function createNodes(projects) {
       ctx.fillStyle = active ? colors.near : colors.mid;
       ctx.textBaseline = 'middle';
       ctx.textAlign = right ? 'left' : 'right';
-      ctx.fillText(n.project.name, n.cx + (right ? 14 : -14), n.cy);
+      const anchor = n.cx + (right ? 14 : -14);
+      ctx.fillText(n.project.name, anchor, n.cy);
+
+      // remember where the label sits so it's hoverable too (see hitTest)
+      const w = ctx.measureText(n.project.name).width;
+      n.labelBox = {
+        x0: right ? anchor : anchor - w,
+        x1: right ? anchor + w : anchor,
+        y0: n.cy - 8,
+        y1: n.cy + 8,
+      };
     }
   }
 

@@ -27,27 +27,6 @@ export const profile = {
 /** @type {Project[]} */
 export const projects = [
   {
-    id: 'noose',
-    name: 'NOOSE',
-    blurb:
-      'Audited, role-based case database for a GTA roleplay law-enforcement faction - linked person/faction files, investigations, threat scoring and a relationship graph, updated in real time.',
-    tech: ['C#', '.NET 10', 'Blazor', 'EF Core', 'MySQL'],
-    year: 2026,
-    status: 'live',
-    links: { live: 'https://demo.noose.info', repo: 'https://github.com/Tr1sma/NOOSE-Website' },
-    coord: { x: 48, y: 45 }, // backend-heavy product (Backend + Product quadrant)
-  },
-  {
-    id: 'tide',
-    name: 'Tide',
-    blurb: 'A tiny tool that turns messy CSV exports into clean, typed datasets in one drag.',
-    tech: ['Rust', 'WASM', 'Vite'],
-    year: 2024,
-    status: 'live',
-    links: { live: 'https://example.com', repo: 'https://github.com/you/tide' },
-    coord: { x: -12, y: -32 }, // small data/dev tool
-  },
-  {
     id: 'bookheart',
     name: 'BookHeart',
     blurb:
@@ -62,6 +41,17 @@ export const projects = [
     coord: { x: -28, y: 68 }, // polished consumer mobile product (Frontend + Product quadrant)
   },
   {
+    id: 'noose',
+    name: 'NOOSE',
+    blurb:
+      'Audited, role-based case database for a GTA roleplay law-enforcement faction - linked person/faction files, investigations, threat scoring and a relationship graph, updated in real time.',
+    tech: ['C#', '.NET 10', 'Blazor', 'EF Core', 'MySQL'],
+    year: 2026,
+    status: 'live',
+    links: { live: 'https://demo.noose.info', repo: 'https://github.com/Tr1sma/NOOSE-Website' },
+    coord: { x: 48, y: 45 }, // backend-heavy product (Backend + Product quadrant)
+  },
+  {
     id: 'fluidsim',
     name: 'Fluid Sim',
     blurb:
@@ -70,6 +60,17 @@ export const projects = [
     year: 2025,
     links: { repo: 'https://github.com/Tr1sma/FluidSimCpp' },
     coord: { x: 45, y: -72 }, // low-level systems / physics experiment (Backend + Infrastructure)
+  },
+  {
+    id: 'nuget',
+    name: 'NuGet Libraries',
+    blurb:
+      'A collection of 12 open-source .NET packages on NuGet - a rich console UX toolkit plus focused Windows APIs (autostart, event log, registry, credentials, toasts), audio & gamepad I/O, AES-256-GCM crypto and cross-platform MAUI notifications. 10k+ downloads.',
+    tech: ['C#', '.NET 10', 'NuGet', 'Win32'],
+    year: 2025,
+    status: 'live',
+    links: { live: 'https://www.nuget.org/profiles/BenSowieja' },
+    coord: { x: 72, y: -30 }, // reusable .NET libraries / dev tooling (Backend + Infrastructure)
   },
   {
     id: 'nullradix',
@@ -110,7 +111,7 @@ export const skills = [
   { group: 'Languages', items: ['C#', 'C++', 'JavaScript', 'Lua', 'SQL'] },
   { group: 'Backend', items: ['.NET 10', 'ASP.NET Core', 'EF Core', 'SignalR'] },
   { group: 'Frontend', items: ['Blazor', '.NET MAUI', 'Vanilla JS', 'CSS', 'GSAP'] },
-  { group: 'Data & Tools', items: ['MySQL / MariaDB', 'SQLite', 'OAuth', 'CI/CD', 'Git'] },
+  { group: 'Data & Tools', items: ['MySQL / MariaDB', 'SQLite', 'OAuth', 'CI/CD', 'Git', 'TSql'] },
 ];
 
 /** @type {{org:string, role:string, from:string, to:string, summary:string, tech?:string[]}[]} */
