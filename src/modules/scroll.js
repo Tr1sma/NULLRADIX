@@ -62,8 +62,11 @@ export async function initScroll() {
     });
 
     // ---- giant ghost wordmark drifts slower than the page ----
+    // Skip on touch: scroll-scrubbing a position:fixed element jitters/bounces
+    // against the mobile dynamic toolbar + rubber-band overscroll (same reason
+    // Lenis is off here). The wordmark just sits still instead.
     const ghost = document.querySelector('[data-ghost]');
-    if (ghost) {
+    if (ghost && !env.coarsePointer) {
       gsap.to(ghost, {
         yPercent: -14,
         ease: 'none',

@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { qs, el } from '../utils/dom.js';
 import { projects } from '../data/content.js';
+import { env } from './env.js';
 
 /** Build the accessible work list + a sharp marker that glides between rows. */
 export function renderProjects(panel) {
@@ -109,21 +110,54 @@ function initMarker(list, api) {
     gsap.to(marker, { opacity: 0, duration: 0.2, ease: 'power2.out', overwrite: true });
   }
 
-  items.forEach((it) => {
-    it.addEventListener('pointerenter', () => moveTo(it));
-    it.querySelector('.open-trigger')?.addEventListener('focus', () => moveTo(it));
-  });
-  list.addEventListener('pointerleave', hide);
+  // keyboard focus drives the highlight on every device
+  items.forEach((it) =>
+    it.querySelector('.open-trigger')?.addEventListener('focus', () => moveTo(it))
+  );
   list.addEventListener('focusout', (e) => {
     if (!list.contains(e.relatedTarget)) hide();
   });
-  addEventListener(
-    'resize',
-    () => {
-      if (current && shown) gsap.set(marker, { y: current.offsetTop, height: current.offsetHeight });
-    },
-    { passive: true }
-  );
+
+  if (env.coarsePointer) {
+    // Touch has no hover - keep whichever row sits nearest the viewport centre
+    // lit as the page scrolls (this also cross-highlights the plotted node).
+    let raf = 0;
+    const syncCentered = () => {
+      raf = 0;
+      const mid = innerHeight / 2;
+      let best = null;
+      let bestD = Infinity;
+      for (const it of items) {
+        const r = it.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) continue; // off-screen
+        const d = Math.abs(r.top + r.height / 2 - mid);
+        if (d < bestD) {
+          bestD = d;
+          best = it;
+        }
+      }
+      if (best) moveTo(best);
+      else hide();
+    };
+    const queue = () => {
+      if (!raf) raf = requestAnimationFrame(syncCentered);
+    };
+    addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', queue, { passive: true });
+    requestAnimationFrame(syncCentered); // light the centre row on load
+  } else {
+    // Fine pointer: classic hover.
+    items.forEach((it) => it.addEventListener('pointerenter', () => moveTo(it)));
+    list.addEventListener('pointerleave', hide);
+    addEventListener(
+      'resize',
+      () => {
+        if (current && shown)
+          gsap.set(marker, { y: current.offsetTop, height: current.offsetHeight });
+      },
+      { passive: true }
+    );
+  }
 
   return { moveTo, hide, items };
 }
