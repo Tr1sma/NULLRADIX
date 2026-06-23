@@ -148,7 +148,7 @@ export const experience = [
 export const socials = [
   { label: 'GitHub', href: 'https://github.com/Tr1sma', handle: '@Tr1sma' },
   { label: 'Fiverr', href: 'https://de.fiverr.com/tristan_sowieja', handle: '@tristan_sowieja' },
-  { label: 'Discord', href: 'https://discord.com/users/883419902843699250', handle: 'Tristan' },
+  { label: 'Discord', href: 'https://discord.com/users/883419902843699250', handle: '@Tristan' },
 ];
 
 export default { profile, axes, about, projects, skills, experience, socials };
