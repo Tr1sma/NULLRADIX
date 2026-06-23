@@ -11,6 +11,7 @@ export function renderSections() {
 
   qsa('[data-profile-email]').forEach((node) => {
     node.textContent = profile.email;
+    node.dataset.text = profile.email; // mirror for the glyph-bound glow (::before content)
     if (node.tagName === 'A') node.href = `mailto:${profile.email}`;
   });
 
@@ -89,8 +90,9 @@ function initTimelineDot(root) {
   root.appendChild(dot);
 
   const anchorY = (item) => {
+    // item.offsetParent is .timeline; range.offsetTop is relative to the item
     const r = item.querySelector('.timeline__range');
-    return r.offsetTop + r.offsetHeight / 2 - 6; // centre the 12px dot on the date line
+    return item.offsetTop + r.offsetTop + r.offsetHeight / 2 - 6; // centre the 12px dot
   };
 
   let placed = false;
@@ -101,7 +103,8 @@ function initTimelineDot(root) {
       gsap.set(dot, { y, opacity: 1 });
       placed = true;
     } else {
-      gsap.to(dot, { y, duration: 0.34, ease: 'power3.out', overwrite: true });
+      // slow in, fast through the middle, slow out — short so it tracks the cursor
+      gsap.to(dot, { y, duration: 0.22, ease: 'expo.inOut', overwrite: true });
     }
   }
 

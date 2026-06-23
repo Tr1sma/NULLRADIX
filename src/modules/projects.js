@@ -15,7 +15,7 @@ export function renderProjects(panel) {
       { class: 'open-trigger', type: 'button', 'aria-haspopup': 'dialog' },
       [p.name, el('span', { class: 'arrow', 'aria-hidden': 'true' }, '↗')]
     );
-    trigger.addEventListener('click', () => panel.open(p, i + 1));
+    trigger.addEventListener('click', () => panel.open(p, i + 1, trigger));
 
     const meta = el('div', { class: 'work-item__meta' }, [
       p.status ? el('span', { class: 'status' }, p.status) : null,

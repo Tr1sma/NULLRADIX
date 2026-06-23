@@ -1,6 +1,6 @@
 import { qs, qsa } from '../utils/dom.js';
 
-/** Active-section sync in the nav + auto-hide header on scroll-down. */
+/** Active-section sync in the nav + header morphs into a dynamic-island pill on scroll. */
 export function initNav() {
   const header = qs('[data-header]');
   const links = qsa('.site-nav a');
@@ -24,22 +24,20 @@ export function initNav() {
     sections.forEach((s) => io.observe(s));
   }
 
-  // auto-hide header
+  // collapse the header into the island once scrolled past the hero top
   if (header) {
-    let lastY = window.scrollY;
     let ticking = false;
+    const update = () => {
+      header.setAttribute('data-scrolled', window.scrollY > 48 ? 'true' : 'false');
+      ticking = false;
+    };
+    update();
     window.addEventListener(
       'scroll',
       () => {
         if (ticking) return;
         ticking = true;
-        requestAnimationFrame(() => {
-          const y = window.scrollY;
-          const hide = y > lastY && y > 200;
-          header.setAttribute('data-hidden', hide ? 'true' : 'false');
-          lastY = y;
-          ticking = false;
-        });
+        requestAnimationFrame(update);
       },
       { passive: true }
     );

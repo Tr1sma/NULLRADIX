@@ -309,19 +309,67 @@
   gap: var(--sp-8);
 }
 .contact__email {
+  position: relative;
+  isolation: isolate;
   font-family: var(--ff-display);
   font-size: var(--fs-600);
   font-variation-settings: 'wght' 500, 'wdth' 100;
   letter-spacing: -0.02em;
   color: var(--c-near);
   width: fit-content;
+  transform-origin: left center;
   background: linear-gradient(var(--c-near), var(--c-near)) no-repeat left bottom / 0% 2px;
-  transition: background-size var(--dur) var(--ease), font-variation-settings var(--dur) var(--ease);
+  transition: background-size var(--dur) var(--ease), font-variation-settings var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+/* glow bound to the glyphs: a duplicate of the text, lit, revealed only
+   through a narrow mask band that sweeps across again and again */
+.contact__email::before {
+  content: attr(data-text);
+  position: absolute;
+  /* grow the box outward, then pad the text back into place, so the mask
+     (clipped to border-box) doesn't slice the glow where the letters end */
+  inset: -0.7em -0.95em;
+  padding: 0.7em 0.95em;
+  z-index: -1;
+  pointer-events: none;
+  color: var(--c-near);
+  font-variation-settings: inherit;
+  text-shadow:
+    0 0 6px color-mix(in oklab, var(--c-near) 85%, transparent),
+    0 0 16px color-mix(in oklab, var(--c-near) 55%, transparent),
+    0 0 30px color-mix(in oklab, var(--c-near) 35%, transparent);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease), font-variation-settings var(--dur) var(--ease);
+  -webkit-mask-image: linear-gradient(100deg,
+    transparent 42%, rgba(0, 0, 0, 0.55) 48%, #000 50%, rgba(0, 0, 0, 0.55) 52%, transparent 58%);
+  mask-image: linear-gradient(100deg,
+    transparent 42%, rgba(0, 0, 0, 0.55) 48%, #000 50%, rgba(0, 0, 0, 0.55) 52%, transparent 58%);
+  -webkit-mask-size: 300% 100%;
+  mask-size: 300% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
 }
 .contact__email:hover,
 .contact__email:focus-visible {
   background-size: 100% 2px;
   font-variation-settings: 'wght' 800, 'wdth' 120;
+  transform: scale(1.06);
+}
+.contact__email:hover::before,
+.contact__email:focus-visible::before {
+  opacity: 1;
+  animation: email-sweep 2.6s linear infinite;
+}
+@keyframes email-sweep {
+  from { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+  to { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact__email { transform: none !important; }
+  .contact__email::before { animation: none; opacity: 0; }
 }
 .socials {
   display: flex;
@@ -361,9 +409,13 @@
   position: absolute;
   inset: 0;
   background: color-mix(in oklab, var(--c-void) 78%, transparent);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(0);
   opacity: 0;
-  animation: fade var(--dur) var(--ease) forwards;
+  transition: opacity var(--dur-modal) var(--ease), backdrop-filter var(--dur-modal) var(--ease);
+}
+.panel.is-open .panel__backdrop {
+  opacity: 1;
+  backdrop-filter: blur(6px);
 }
 .panel__card {
   position: relative;
@@ -375,15 +427,40 @@
   border: 1px solid var(--c-line);
   border-radius: var(--radius);
   box-shadow: 0 30px 90px -20px #000;
-  transform: translateY(14px);
+  /* JS sets --ox/--oy to the clicked name's position so the card grows out of it */
+  transform-origin: var(--ox, 50%) var(--oy, 0%);
+  transform: translateY(8px) scale(0.86);
   opacity: 0;
-  animation: rise var(--dur) var(--ease) forwards;
+  transition: opacity var(--dur-modal) var(--ease), transform var(--dur-modal) var(--ease-inout);
 }
-@keyframes fade { to { opacity: 1; } }
-@keyframes rise { to { transform: none; opacity: 1; } }
-@media (prefers-reduced-motion: reduce) {
-  .panel__backdrop,
-  .panel__card { animation: none; opacity: 1; transform: none; }
+.panel.is-open .panel__card {
+  transform: none;
+  opacity: 1;
+}
+/* clean staggered content reveal — tidy cascade after the card lands */
+.panel__card > :not(.panel__close) {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--dur-modal) var(--ease), transform var(--dur-modal) var(--ease);
+}
+.panel.is-open .panel__card > :not(.panel__close) {
+  opacity: 1;
+  transform: none;
+}
+.panel.is-open .panel__card > :not(.panel__close):nth-child(2) { transition-delay: 90ms; }
+.panel.is-open .panel__card > :not(.panel__close):nth-child(3) { transition-delay: 130ms; }
+.panel.is-open .panel__card > :not(.panel__close):nth-child(4) { transition-delay: 170ms; }
+.panel.is-open .panel__card > :not(.panel__close):nth-child(5) { transition-delay: 210ms; }
+.panel.is-open .panel__card > :not(.panel__close):nth-child(6) { transition-delay: 250ms; }
+.panel.is-open .panel__card > :not(.panel__close):nth-child(7) { transition-delay: 290ms; }
+/* typed lines reveal via the typewriter, not the fade-up cascade */
+.panel__card > .panel__index,
+.panel__card > .panel__title,
+.panel__card > .panel__meta,
+.panel__card > .panel__blurb {
+  opacity: 1;
+  transform: none;
+  transition: none;
 }
 .panel__close {
   position: absolute;

@@ -53,12 +53,15 @@
   --dur-fast: 200ms;
   --dur: 420ms;
   --dur-slow: 900ms;
+  /* click-triggered modal open/close — intentionally plays under reduced motion */
+  --dur-modal: 420ms;
   --ease: cubic-bezier(0.2, 1, 0.3, 1);
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
+    /* ambient/scroll loops collapse; --dur-modal is deliberately left intact */
     --dur-fast: 0ms;
     --dur: 0ms;
     --dur-slow: 0ms;
