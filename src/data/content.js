@@ -52,6 +52,17 @@ export const projects = [
     coord: { x: 48, y: 45 }, // backend-heavy product (Backend + Product quadrant)
   },
   {
+    id: 'kosguardian',
+    name: 'KoSGuardian',
+    blurb:
+      'A user-mode anti-cheat for Windows in pure C++ - layered runtime scanning of memory, modules, threads, IAT and inline hooks, with code-integrity checks, anti-debugging, a trusted-module catalog and a watchdog, all hidden behind API hashing and string obfuscation.',
+    tech: ['C++', 'Win32'],
+    year: 2026,
+    status: 'wip',
+    links: { repo: 'https://github.com/Tr1sma/AntiCheat-KoSGuardian' },
+    coord: { x: 62, y: -85 }, // low-level Windows security / systems internals (Backend + Infrastructure)
+  },
+  {
     id: 'fluidsim',
     name: 'Fluid Sim',
     blurb:
