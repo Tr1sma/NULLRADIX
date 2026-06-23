@@ -116,28 +116,31 @@ export const skills = [
 /** @type {{org:string, role:string, from:string, to:string, summary:string, tech?:string[]}[]} */
 export const experience = [
   {
-    org: 'Acme Labs',
-    role: 'Senior Developer',
-    from: '2023',
+    org: 'Vocational Training',
+    role: 'IT Specialist - Application Development',
+    from: '2024',
     to: 'Present',
-    summary: 'Lead frontend architecture for a real-time product used by thousands every day.',
-    tech: ['TypeScript', 'Rust'],
+    summary:
+      'Apprenticeship as Fachinformatiker für Anwendungsentwicklung - designing, building and maintaining software end to end.',
+    tech: ['C#', '.NET', 'SQL'],
   },
   {
-    org: 'Studio North',
-    role: 'Full-stack Developer',
-    from: '2021',
-    to: '2023',
-    summary: 'Built and shipped client apps end to end, from API design to the last pixel.',
-    tech: ['Node', 'React', 'Postgres'],
-  },
-  {
-    org: 'Freelance',
+    org: 'ModernV',
     role: 'Developer',
-    from: '2019',
-    to: '2021',
-    summary: 'Designed and delivered small products for early-stage founders.',
-    tech: ['JavaScript'],
+    from: '2025',
+    to: 'Present',
+    summary:
+      'Build real-time tools for ModernV, a GTA roleplay server - including NOOSE, an audited, role-based case database for an in-game law-enforcement faction.',
+    tech: ['C#', '.NET', 'Blazor', 'MySQL'],
+  },
+  {
+    org: 'Fiverr',
+    role: 'Freelance Developer',
+    from: '2026',
+    to: 'Present',
+    summary:
+      'Take commissions for custom FiveM scripts, .NET backends & REST APIs, Blazor / ASP.NET web apps and cross-platform mobile apps.',
+    tech: ['FiveM', '.NET', 'Blazor', 'MAUI'],
   },
 ];
 
