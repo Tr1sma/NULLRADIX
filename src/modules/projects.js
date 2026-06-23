@@ -1,7 +1,8 @@
+import gsap from 'gsap';
 import { qs, el } from '../utils/dom.js';
 import { projects } from '../data/content.js';
 
-/** Build the accessible work list. Clicking a title opens the shared detail panel. */
+/** Build the accessible work list + a sharp marker that glides between rows. */
 export function renderProjects(panel) {
   const list = qs('[data-projects]');
   if (!list) return;
@@ -37,4 +38,83 @@ export function renderProjects(panel) {
 
     list.append(item);
   });
+
+  initMarker(list);
+}
+
+const NUM_REST = { w: 300, wd: 60 };
+const NUM_ACTIVE = { w: 820, wd: 145 };
+const setNum = (item) => {
+  item._num.style.fontVariationSettings = `'wght' ${Math.round(item._st.w)}, 'wdth' ${Math.round(
+    item._st.wd
+  )}, 'opsz' 144`;
+};
+
+/**
+ * One gliding highlight + GSAP-driven glyph weight. These are small, non-scrolling
+ * hover micro-interactions, so they intentionally play even under reduced-motion
+ * (the page-level motion — hero, parallax, reveals, grain — still respects it).
+ */
+function initMarker(list) {
+  const marker = el('div', { class: 'work-marker', 'aria-hidden': 'true' });
+  list.append(marker);
+
+  const items = [...list.querySelectorAll('.work-item')];
+  items.forEach((it) => {
+    it._num = it.querySelector('.work-item__num');
+    it._st = { ...NUM_REST };
+  });
+
+  let current = null;
+  let shown = false;
+
+  const ramp = (item, to, duration, ease) =>
+    gsap.to(item._st, { ...to, duration, ease, overwrite: true, onUpdate: () => setNum(item) });
+
+  function moveTo(item) {
+    if (item === current) return;
+    if (current) {
+      current.classList.remove('is-active');
+      ramp(current, NUM_REST, 0.26, 'power3.out');
+    }
+    current = item;
+    item.classList.add('is-active');
+    ramp(item, NUM_ACTIVE, 0.32, 'power3.out');
+
+    const y = item.offsetTop;
+    const h = item.offsetHeight;
+    if (!shown) {
+      gsap.set(marker, { y, height: h });
+      gsap.to(marker, { opacity: 1, duration: 0.18, ease: 'power2.out', overwrite: true });
+      shown = true;
+    } else {
+      gsap.to(marker, { y, height: h, opacity: 1, duration: 0.34, ease: 'power3.out', overwrite: true });
+    }
+  }
+
+  function hide() {
+    if (current) {
+      current.classList.remove('is-active');
+      ramp(current, NUM_REST, 0.26, 'power3.out');
+      current = null;
+    }
+    shown = false;
+    gsap.to(marker, { opacity: 0, duration: 0.2, ease: 'power2.out', overwrite: true });
+  }
+
+  items.forEach((it) => {
+    it.addEventListener('pointerenter', () => moveTo(it));
+    it.querySelector('.open-trigger')?.addEventListener('focus', () => moveTo(it));
+  });
+  list.addEventListener('pointerleave', hide);
+  list.addEventListener('focusout', (e) => {
+    if (!list.contains(e.relatedTarget)) hide();
+  });
+  addEventListener(
+    'resize',
+    () => {
+      if (current && shown) gsap.set(marker, { y: current.offsetTop, height: current.offsetHeight });
+    },
+    { passive: true }
+  );
 }

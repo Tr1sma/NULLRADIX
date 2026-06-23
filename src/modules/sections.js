@@ -1,3 +1,4 @@
+import gsap from 'gsap';
 import { qs, qsa, el } from '../utils/dom.js';
 import { profile, skills, experience, socials } from '../data/content.js';
 
@@ -44,6 +45,7 @@ export function renderSections() {
         ])
       )
     );
+    initTimelineDot(expRoot);
   }
 
   const socialRoot = qs('[data-socials]');
@@ -76,4 +78,41 @@ export function renderSections() {
       }
     });
   }
+}
+
+/** A single dot that glides down the timeline line to the hovered entry. */
+function initTimelineDot(root) {
+  const items = [...root.querySelectorAll('.timeline__item')];
+  if (!items.length) return;
+
+  const dot = el('span', { class: 'timeline__dot', 'aria-hidden': 'true' });
+  root.appendChild(dot);
+
+  const anchorY = (item) => {
+    const r = item.querySelector('.timeline__range');
+    return r.offsetTop + r.offsetHeight / 2 - 6; // centre the 12px dot on the date line
+  };
+
+  let placed = false;
+  function moveTo(item) {
+    items.forEach((x) => x.classList.toggle('is-active', x === item));
+    const y = anchorY(item);
+    if (!placed) {
+      gsap.set(dot, { y, opacity: 1 });
+      placed = true;
+    } else {
+      gsap.to(dot, { y, duration: 0.34, ease: 'power3.out', overwrite: true });
+    }
+  }
+
+  moveTo(items[0]); // rest at the top entry
+  items.forEach((it) => it.addEventListener('pointerenter', () => moveTo(it)));
+  addEventListener(
+    'resize',
+    () => {
+      const active = items.find((x) => x.classList.contains('is-active')) || items[0];
+      gsap.set(dot, { y: anchorY(active) });
+    },
+    { passive: true }
+  );
 }
