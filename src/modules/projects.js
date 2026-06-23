@@ -77,6 +77,18 @@ function initMarker(list, api) {
   const ramp = (item, to, duration, ease) =>
     gsap.to(item._st, { ...to, duration, ease, overwrite: true, onUpdate: () => setNum(item) });
 
+  // The active row is ~25px taller because its big index glyph swells (wght/wdth).
+  // GSAP applies that on its next tick, so a plain offsetHeight read here captures
+  // the pre-swell height and leaves the marker short. Measure the settled height by
+  // briefly forcing the final glyph axes, then hand the glyph back to the ramp.
+  function activeHeight(item) {
+    const prev = item._num.style.fontVariationSettings;
+    item._num.style.fontVariationSettings = `'wght' ${NUM_ACTIVE.w}, 'wdth' ${NUM_ACTIVE.wd}, 'opsz' 144`;
+    const h = item.offsetHeight;
+    item._num.style.fontVariationSettings = prev;
+    return h;
+  }
+
   function moveTo(item) {
     if (item === current) return;
     if (current) {
@@ -89,7 +101,7 @@ function initMarker(list, api) {
     api?.onHighlight?.(items.indexOf(item)); // mirror onto the plotted node
 
     const y = item.offsetTop;
-    const h = item.offsetHeight;
+    const h = activeHeight(item);
     if (!shown) {
       gsap.set(marker, { y, height: h });
       gsap.to(marker, { opacity: 1, duration: 0.18, ease: 'power2.out', overwrite: true });

@@ -37,6 +37,12 @@
 @media (prefers-reduced-motion: reduce) {
   .grain { animation: none; }
 }
+/* Touch: the grain's step-translate reads as a grey box bouncing around on
+   mobile (screen-blend + DPR), and it's an imperceptible ambient detail there
+   anyway - drop it entirely. */
+@media (pointer: coarse) {
+  .grain { display: none; }
+}
 
 /* content above ambient */
 .site-header,
