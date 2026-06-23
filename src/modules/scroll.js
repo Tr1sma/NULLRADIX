@@ -6,7 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const HEADER_OFFSET = 64;
 
-/** Custom rAF smooth-scroll — used for anchor clicks when Lenis isn't running. */
+/** Custom rAF smooth-scroll - used for anchor clicks when Lenis isn't running. */
 function smoothScrollTo(targetY, duration = 800) {
   const startY = window.scrollY;
   const dist = targetY - startY;

@@ -1,14 +1,14 @@
 /**
- * NULLRADIX — single source of truth for content.
+ * NULLRADIX - single source of truth for content.
  * Edit this file to update the site. (The hero headline + subline live in
  * index.html since they're the one piece of brand copy.)
  */
 
 export const profile = {
-  name: 'NULLRADIX',
+  name: 'Tristan',
   role: 'Developer',
   status: 'Available for work',
-  email: 'you@example.com',
+  email: 'tristan@nullradix.de',
 };
 
 /**
@@ -20,18 +20,22 @@ export const profile = {
  * @property {number} year
  * @property {'live'|'wip'|'archived'} [status]
  * @property {{live?:string,repo?:string,docs?:string}} links
+ * @property {{x:number,y:number}} coord  where the project leans on the plane (each axis ~ -100..100;
+ *   x: Frontend (-) ↔ Backend (+), y: Infrastructure (-) ↔ Product (+))
  */
 
 /** @type {Project[]} */
 export const projects = [
   {
-    id: 'ledger-engine',
-    name: 'Ledger Engine',
-    blurb: 'A double-entry accounting core that stays correct under load — fast, auditable, hard to misuse.',
-    tech: ['TypeScript', 'Go', 'Postgres'],
-    year: 2025,
+    id: 'noose',
+    name: 'NOOSE',
+    blurb:
+      'Audited, role-based case database for a GTA roleplay law-enforcement faction - linked person/faction files, investigations, threat scoring and a relationship graph, updated in real time.',
+    tech: ['C#', '.NET 10', 'Blazor', 'EF Core', 'MySQL'],
+    year: 2026,
     status: 'live',
-    links: { live: 'https://example.com', repo: 'https://github.com/you/ledger-engine' },
+    links: { live: 'https://demo.noose.info', repo: 'https://github.com/Tr1sma/NOOSE-Website' },
+    coord: { x: 48, y: 45 }, // backend-heavy product (Backend + Product quadrant)
   },
   {
     id: 'tide',
@@ -41,6 +45,7 @@ export const projects = [
     year: 2024,
     status: 'live',
     links: { live: 'https://example.com', repo: 'https://github.com/you/tide' },
+    coord: { x: -12, y: -32 }, // small data/dev tool
   },
   {
     id: 'quiet-hours',
@@ -50,6 +55,7 @@ export const projects = [
     year: 2023,
     status: 'live',
     links: { live: 'https://example.com' },
+    coord: { x: -60, y: 75 }, // polished frontend product
   },
   {
     id: 'relay',
@@ -59,24 +65,47 @@ export const projects = [
     year: 2023,
     status: 'archived',
     links: { repo: 'https://github.com/you/relay' },
+    coord: { x: 58, y: -58 }, // backend infra / plumbing
   },
   {
     id: 'nullradix',
     name: 'nullradix.dev',
-    blurb: 'This site — kinetic type, monochrome, built from scratch with no UI framework.',
+    blurb: 'This site - kinetic type, monochrome, built from scratch with no UI framework.',
     tech: ['Vanilla JS', 'GSAP', 'Vite'],
     year: 2026,
     status: 'wip',
     links: { repo: 'https://github.com/you/nullradix' },
+    coord: { x: -80, y: 48 }, // frontend product (this site)
   },
 ];
 
+/**
+ * The plane's meaning - the four directions a project can lean toward. These
+ * label the axis poles in the field; a project's `coord` places it between them.
+ * Rename freely.
+ * @type {{x:{neg:string,pos:string}, y:{neg:string,pos:string}}}
+ */
+export const axes = {
+  x: { neg: 'Frontend', pos: 'Backend' },
+  y: { neg: 'Infrastructure', pos: 'Product' },
+};
+
+/** @type {{lead:string, principles:{k:string,v:string}[]}} */
+export const about = {
+  lead: 'I build software that feels obvious - fast, durable products where the hard parts are hidden and the right thing is the easy thing to do.',
+  principles: [
+    { k: 'Correctness', v: 'Systems that stay right under load, and fail loudly when they don’t.' },
+    { k: 'Clarity', v: 'Code and interfaces a stranger can read at a glance - including future me.' },
+    { k: 'Durability', v: 'Boring, well-bounded pieces that keep working long after launch.' },
+  ],
+};
+
 /** @type {{group:string, items:string[]}[]} */
 export const skills = [
-  { group: 'Languages', items: ['TypeScript', 'Rust', 'Go', 'Python'] },
-  { group: 'Frontend', items: ['Vanilla JS', 'CSS', 'GSAP', 'React'] },
-  { group: 'Backend', items: ['Node', 'Postgres', 'Redis', 'REST / WS'] },
-  { group: 'Tooling', items: ['Vite', 'Git', 'Docker', 'CI/CD'] },
+  { group: 'Languages', items: ['C#', 'JavaScript', 'SQL'] },
+  { group: 'Backend', items: ['.NET 10', 'ASP.NET Core', 'EF Core', 'SignalR'] },
+  { group: 'Frontend', items: ['Blazor', 'Vanilla JS', 'CSS', 'GSAP'] },
+  { group: 'Data & Tools', items: ['MySQL / MariaDB', 'OAuth', 'Git', 'Vite'] },
 ];
 
 /** @type {{org:string, role:string, from:string, to:string, summary:string, tech?:string[]}[]} */
@@ -109,9 +138,9 @@ export const experience = [
 
 /** @type {{label:string, href:string, handle:string}[]} */
 export const socials = [
-  { label: 'GitHub', href: 'https://github.com/you', handle: '@you' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/you', handle: '/in/you' },
+  { label: 'GitHub', href: 'https://github.com/Tr1sma', handle: '@Tr1sma' },
+  { label: 'Fiverr', href: 'https://de.fiverr.com/tristan_sowieja', handle: '@tristan_sowieja' },
   { label: 'X', href: 'https://x.com/you', handle: '@you' },
 ];
 
-export default { profile, projects, skills, experience, socials };
+export default { profile, axes, about, projects, skills, experience, socials };

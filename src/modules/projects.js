@@ -39,7 +39,12 @@ export function renderProjects(panel) {
     list.append(item);
   });
 
-  initMarker(list);
+  // small controller so the field can cross-highlight rows (and vice-versa)
+  const api = { onHighlight: null, onClear: null, highlight() {}, clearHighlight() {} };
+  const marker = initMarker(list, api);
+  api.highlight = (i) => marker.items[i] && marker.moveTo(marker.items[i]);
+  api.clearHighlight = () => marker.hide();
+  return api;
 }
 
 const NUM_REST = { w: 300, wd: 60 };
@@ -53,9 +58,9 @@ const setNum = (item) => {
 /**
  * One gliding highlight + GSAP-driven glyph weight. These are small, non-scrolling
  * hover micro-interactions, so they intentionally play even under reduced-motion
- * (the page-level motion — hero, parallax, reveals, grain — still respects it).
+ * (the page-level motion - hero, parallax, reveals, grain - still respects it).
  */
-function initMarker(list) {
+function initMarker(list, api) {
   const marker = el('div', { class: 'work-marker', 'aria-hidden': 'true' });
   list.append(marker);
 
@@ -80,6 +85,7 @@ function initMarker(list) {
     current = item;
     item.classList.add('is-active');
     ramp(item, NUM_ACTIVE, 0.32, 'power3.out');
+    api?.onHighlight?.(items.indexOf(item)); // mirror onto the plotted node
 
     const y = item.offsetTop;
     const h = item.offsetHeight;
@@ -99,6 +105,7 @@ function initMarker(list) {
       current = null;
     }
     shown = false;
+    api?.onClear?.();
     gsap.to(marker, { opacity: 0, duration: 0.2, ease: 'power2.out', overwrite: true });
   }
 
@@ -117,4 +124,6 @@ function initMarker(list) {
     },
     { passive: true }
   );
+
+  return { moveTo, hide, items };
 }

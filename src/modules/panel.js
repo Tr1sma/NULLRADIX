@@ -17,7 +17,7 @@ export function createPanel() {
 
   /**
    * Reveal `text` in `node` character-by-character. Every glyph is laid out
-   * up-front (hidden), so the box keeps its final size — no reflow, no jump,
+   * up-front (hidden), so the box keeps its final size - no reflow, no jump,
    * and the open-from-click origin measures against the real height.
    */
   function typeText(node, text, delay, duration) {

@@ -1,13 +1,26 @@
 import gsap from 'gsap';
 import { qs, qsa, el } from '../utils/dom.js';
-import { profile, skills, experience, socials } from '../data/content.js';
+import { profile, about, skills, experience, socials } from '../data/content.js';
 
 /** Fill the data-driven regions from content.js. */
 export function renderSections() {
-  document.title = `${profile.name} — ${profile.role}`;
+  document.title = `${profile.name} - ${profile.role}`;
 
   const status = qs('[data-profile-status]');
   if (status) status.textContent = profile.status;
+
+  const aboutLead = qs('[data-about-lead]');
+  if (aboutLead) aboutLead.textContent = about.lead;
+
+  const aboutPrinciples = qs('[data-about-principles]');
+  if (aboutPrinciples) {
+    aboutPrinciples.replaceChildren(
+      ...about.principles.flatMap((p) => [
+        el('dt', { class: 'about__k' }, p.k),
+        el('dd', { class: 'about__v' }, p.v),
+      ])
+    );
+  }
 
   qsa('[data-profile-email]').forEach((node) => {
     node.textContent = profile.email;
@@ -36,7 +49,7 @@ export function renderSections() {
     expRoot.replaceChildren(
       ...experience.map((e) =>
         el('li', { class: 'timeline__item' }, [
-          el('p', { class: 'timeline__range' }, `${e.from} — ${e.to}`),
+          el('p', { class: 'timeline__range' }, `${e.from} - ${e.to}`),
           el('p', { class: 'timeline__role' }, e.role),
           el('p', { class: 'timeline__org' }, e.org),
           el('p', { class: 'timeline__summary' }, e.summary),
@@ -103,7 +116,7 @@ function initTimelineDot(root) {
       gsap.set(dot, { y, opacity: 1 });
       placed = true;
     } else {
-      // slow in, fast through the middle, slow out — short so it tracks the cursor
+      // slow in, fast through the middle, slow out - short so it tracks the cursor
       gsap.to(dot, { y, duration: 0.22, ease: 'expo.inOut', overwrite: true });
     }
   }

@@ -8,6 +8,7 @@
   --c-mid: #84848b; /* secondary text */
   --c-near: #fafafb; /* primary text */
   --c-muted: color-mix(in oklab, var(--c-near) 60%, var(--c-void)); /* AA body secondary */
+  --c-origin: #fafafb; /* field accent (ORIGIN / active node) - monochrome for now; swap to a hue to re-introduce the README accent */
 
   /* ---- type ---- */
   --ff-display: 'Roboto Flex Variable', system-ui, sans-serif;
@@ -53,7 +54,7 @@
   --dur-fast: 200ms;
   --dur: 420ms;
   --dur-slow: 900ms;
-  /* click-triggered modal open/close — intentionally plays under reduced motion */
+  /* click-triggered modal open/close - intentionally plays under reduced motion */
   --dur-modal: 420ms;
   --ease: cubic-bezier(0.2, 1, 0.3, 1);
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);

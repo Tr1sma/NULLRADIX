@@ -7,13 +7,13 @@
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0c0c0d" />
 
-    <title>NULLRADIX — Developer</title>
+    <title>NULLRADIX - Developer</title>
     <meta
       name="description"
-      content="NULLRADIX — developer building fast, durable web apps, tools, and the plumbing that makes them work."
+      content="NULLRADIX - developer building fast, durable web apps, tools, and the plumbing that makes them work."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="NULLRADIX — Developer" />
+    <meta property="og:title" content="NULLRADIX - Developer" />
     <meta property="og:description" content="Developer building fast, durable products." />
     <meta property="og:image" content="/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -30,8 +30,9 @@
 
     <header class="site-header" data-header>
       <div class="header-bar">
-        <a class="brand" href="#top" aria-label="NULLRADIX — home">NULLRADIX</a>
+        <a class="brand" href="#top" aria-label="NULLRADIX - home">NULLRADIX</a>
         <nav class="site-nav" aria-label="Primary">
+          <a href="#about">About</a>
           <a href="#work">Work</a>
           <a href="#skills">Skills</a>
           <a href="#contact">Contact</a>
@@ -54,7 +55,7 @@
 
           <p class="hero__sub">
             <span class="line__inner" data-hero-sub>
-              Developer focused on fast, durable products — web apps, tools, and the
+              Developer focused on fast, durable products - web apps, tools, and the
               unglamorous plumbing that makes them work.
             </span>
           </p>
@@ -68,10 +69,25 @@
         </div>
       </section>
 
+      <section id="about" class="section shell" aria-labelledby="about-h">
+        <div class="section__head" data-reveal>
+          <p class="label">About</p>
+          <h2 id="about-h" class="section__title">How I work</h2>
+        </div>
+        <div class="about" data-reveal>
+          <p class="about__lead" data-about-lead></p>
+          <dl class="about__principles" data-about-principles></dl>
+        </div>
+      </section>
+
       <section id="work" class="section shell" aria-labelledby="work-h">
         <div class="section__head" data-reveal>
           <p class="label">Selected work</p>
           <h2 id="work-h" class="section__title">Things I've built</h2>
+        </div>
+        <div class="field" data-field aria-hidden="true" data-reveal>
+          <canvas class="field__canvas" data-field-canvas></canvas>
+          <div class="field__hud" data-field-hud></div>
         </div>
         <ol class="work-list" data-projects><!-- JS --></ol>
       </section>
@@ -100,7 +116,7 @@
 
     <footer class="site-footer">
       <span>NULLRADIX</span>
-      <span><span data-year>2026</span> — built with care</span>
+      <span><span data-year>2026</span> - built with care</span>
     </footer>
 
     <div
