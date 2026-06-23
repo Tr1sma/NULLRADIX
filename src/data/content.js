@@ -62,14 +62,14 @@ export const projects = [
     coord: { x: -28, y: 68 }, // polished consumer mobile product (Frontend + Product quadrant)
   },
   {
-    id: 'relay',
-    name: 'Relay',
-    blurb: 'Self-hosted webhook router with a visual rule builder and replayable history.',
-    tech: ['Go', 'Postgres', 'htmx'],
-    year: 2023,
-    status: 'archived',
-    links: { repo: 'https://github.com/you/relay' },
-    coord: { x: 58, y: -58 }, // backend infra / plumbing
+    id: 'fluidsim',
+    name: 'Fluid Sim',
+    blurb:
+      'A real-time 2D fluid sandbox in pure C++ - up to 10k particles with grid-accelerated collisions, fixed-step physics and interactive mouse forces, software-rendered on raw Win32/GDI with no engine.',
+    tech: ['C++', 'Win32', 'GDI'],
+    year: 2025,
+    links: { repo: 'https://github.com/Tr1sma/FluidSimCpp' },
+    coord: { x: 45, y: -72 }, // low-level systems / physics experiment (Backend + Infrastructure)
   },
   {
     id: 'nullradix',
@@ -78,8 +78,8 @@ export const projects = [
       'This site - a monochrome portfolio that behaves like a graphing instrument: kinetic type, an interactive canvas coordinate field, built from scratch with no UI framework.',
     tech: ['Vanilla JS', 'Canvas', 'GSAP', 'Vite'],
     year: 2026,
-    status: 'wip',
-    links: { repo: 'https://github.com/Tr1sma/NULLRADIX' },
+    status: 'live',
+    links: { live: 'https://nullradix.de', repo: 'https://github.com/Tr1sma/NULLRADIX' },
     coord: { x: -80, y: 48 }, // frontend product (this site)
   },
 ];
@@ -107,7 +107,7 @@ export const about = {
 
 /** @type {{group:string, items:string[]}[]} */
 export const skills = [
-  { group: 'Languages', items: ['C#', 'JavaScript', 'SQL'] },
+  { group: 'Languages', items: ['C#', 'C++', 'JavaScript', 'Lua', 'SQL'] },
   { group: 'Backend', items: ['.NET 10', 'ASP.NET Core', 'EF Core', 'SignalR'] },
   { group: 'Frontend', items: ['Blazor', '.NET MAUI', 'Vanilla JS', 'CSS', 'GSAP'] },
   { group: 'Data & Tools', items: ['MySQL / MariaDB', 'SQLite', 'OAuth', 'CI/CD', 'Git'] },
