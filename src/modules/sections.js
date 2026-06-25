@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { qs, qsa, el } from '../utils/dom.js';
 import { profile, about, skills, experience, socials } from '../data/content.js';
 import { createScramble } from '../utils/scramble.js';
+import { env } from './env.js';
 
 /** Fill the data-driven regions from content.js. */
 export function renderSections() {
@@ -111,9 +112,13 @@ function initTimelineDot(root) {
     return item.offsetTop + r.offsetTop + r.offsetHeight / 2 - 6; // centre the 12px dot
   };
 
+  let current = null;
   let placed = false;
-  function moveTo(item) {
+  function moveTo(item, scramble) {
+    if (item === current) return; // same entry: nothing to re-trigger
+    current = item;
     items.forEach((x) => x.classList.toggle('is-active', x === item));
+    if (scramble) item._scramble?.play();
     const y = anchorY(item);
     if (!placed) {
       gsap.set(dot, { y, opacity: 1 });
@@ -124,19 +129,42 @@ function initTimelineDot(root) {
     }
   }
 
-  moveTo(items[0]); // rest at the top entry (no scramble on load - hover only)
-  items.forEach((it) =>
-    it.addEventListener('pointerenter', () => {
-      it._scramble?.play();
-      moveTo(it);
-    })
-  );
-  addEventListener(
-    'resize',
-    () => {
-      const active = items.find((x) => x.classList.contains('is-active')) || items[0];
-      gsap.set(dot, { y: anchorY(active) });
-    },
-    { passive: true }
-  );
+  // Snap the dot back onto the active entry after reflow (font swap, resize) -
+  // anchorY depends on offsetTop, which shifts when the variable font lands.
+  const resync = () => gsap.set(dot, { y: anchorY(current || items[0]) });
+
+  moveTo(items[0]); // rest at the top entry (no scramble on load)
+  document.fonts?.ready.then(resync);
+
+  if (env.coarsePointer || env.smallScreen) {
+    // Touch / narrow: no hover - the dot tracks whichever entry sits nearest the
+    // viewport centre as the page scrolls (mirrors the work-list marker).
+    let raf = 0;
+    const syncCentered = () => {
+      raf = 0;
+      const mid = innerHeight / 2;
+      let best = null;
+      let bestD = Infinity;
+      for (const it of items) {
+        const r = it.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) continue; // off-screen
+        const d = Math.abs(r.top + r.height / 2 - mid);
+        if (d < bestD) {
+          bestD = d;
+          best = it;
+        }
+      }
+      if (best) moveTo(best, true);
+    };
+    const queue = () => {
+      if (!raf) raf = requestAnimationFrame(syncCentered);
+    };
+    addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', queue, { passive: true });
+    addEventListener('resize', resync, { passive: true });
+    requestAnimationFrame(syncCentered); // light the centred entry on load
+  } else {
+    items.forEach((it) => it.addEventListener('pointerenter', () => moveTo(it, true)));
+    addEventListener('resize', resync, { passive: true });
+  }
 }

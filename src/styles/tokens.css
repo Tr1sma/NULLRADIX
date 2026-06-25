@@ -20,8 +20,8 @@
   --fs-200: clamp(0.95rem, 0.9rem + 0.25vw, 1.06rem); /* body */
   --fs-300: clamp(1.1rem, 0.95rem + 0.7vw, 1.5rem);
   --fs-400: clamp(1.6rem, 1.1rem + 2vw, 2.6rem); /* h2 */
-  --fs-600: clamp(2.2rem, 1.2rem + 4vw, 4rem); /* big project numbers / contact */
-  --fs-hero: clamp(2.8rem, 0.5rem + 11vw, 9rem); /* hero headline */
+  --fs-600: clamp(1.9rem, 1.1rem + 3.4vw, 4rem); /* big project numbers / contact */
+  --fs-hero: clamp(2.2rem, 0.4rem + 10vw, 9rem); /* hero headline */
 
   /* spacing (8px) */
   --sp-1: 0.25rem;

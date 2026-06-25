@@ -95,7 +95,7 @@
     backdrop-filter 0.45s var(--ease);
 }
 .site-header[data-scrolled='true'] .header-bar {
-  max-width: 30rem;
+  max-width: min(30rem, 100%);
   gap: var(--sp-6);
   padding: 8px 12px 8px 20px;
   background: color-mix(in oklab, var(--c-mid) 16%, transparent);
@@ -183,8 +183,27 @@
   margin-bottom: var(--sp-24);
 }
 
-@media (max-width: 640px) {
-  .site-header {
-    padding: var(--sp-4) var(--gutter);
+@media (max-width: 520px) {
+  .brand {
+    letter-spacing: 0.12em;
+  }
+  .site-nav {
+    gap: var(--sp-4);
+  }
+  .header-bar {
+    gap: var(--sp-4);
+    padding: 8px 12px;
+  }
+  .hero {
+    padding-block: var(--sp-24) var(--sp-16);
+  }
+  .section {
+    padding-block: clamp(var(--sp-16), 12vh, var(--sp-24));
+  }
+  .section__head {
+    margin-bottom: var(--sp-8);
+  }
+  .site-footer {
+    padding: var(--sp-12) var(--gutter) var(--sp-16);
   }
 }

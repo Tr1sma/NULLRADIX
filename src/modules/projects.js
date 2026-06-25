@@ -122,6 +122,24 @@ function initMarker(list, api) {
     gsap.to(marker, { opacity: 0, duration: 0.2, ease: 'power2.out', overwrite: true });
   }
 
+  // Snap (don't tween) the marker back onto the active row after any reflow:
+  // async web-font swap, orientation change, content reflow. moveTo bails when
+  // the centred row is unchanged, so without this the marker keeps a stale height
+  // (the "too short/long/overshooting" bug on mobile). gsap.set = no chase.
+  function resync() {
+    if (current && shown) gsap.set(marker, { y: current.offsetTop, height: activeHeight(current) });
+  }
+  // Variable font (Roboto Flex) lands after the first measure → row grows. Re-snap.
+  document.fonts?.ready.then(resync);
+  let roRaf = 0;
+  new ResizeObserver(() => {
+    if (!roRaf)
+      roRaf = requestAnimationFrame(() => {
+        roRaf = 0;
+        resync();
+      });
+  }).observe(list);
+
   // keyboard focus drives the highlight on every device
   items.forEach((it) =>
     it.querySelector('.open-trigger')?.addEventListener('focus', () => moveTo(it))
@@ -130,9 +148,9 @@ function initMarker(list, api) {
     if (!list.contains(e.relatedTarget)) hide();
   });
 
-  if (env.coarsePointer) {
-    // Touch has no hover - keep whichever row sits nearest the viewport centre
-    // lit as the page scrolls (this also cross-highlights the plotted node).
+  if (env.coarsePointer || env.smallScreen) {
+    // Touch / narrow screens have no usable hover - keep whichever row sits nearest
+    // the viewport centre lit as the page scrolls (also cross-highlights the node).
     let raf = 0;
     const syncCentered = () => {
       raf = 0;
@@ -156,19 +174,13 @@ function initMarker(list, api) {
     };
     addEventListener('scroll', queue, { passive: true });
     addEventListener('resize', queue, { passive: true });
+    addEventListener('resize', resync, { passive: true });
     requestAnimationFrame(syncCentered); // light the centre row on load
   } else {
     // Fine pointer: classic hover.
     items.forEach((it) => it.addEventListener('pointerenter', () => moveTo(it)));
     list.addEventListener('pointerleave', hide);
-    addEventListener(
-      'resize',
-      () => {
-        if (current && shown)
-          gsap.set(marker, { y: current.offsetTop, height: current.offsetHeight });
-      },
-      { passive: true }
-    );
+    addEventListener('resize', resync, { passive: true });
   }
 
   return { moveTo, hide, items };

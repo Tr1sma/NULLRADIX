@@ -567,3 +567,29 @@
     align-self: start;
   }
 }
+
+@media (max-width: 520px) {
+  /* email must never overflow (body has overflow-x:hidden, would silently clip) */
+  .contact__email {
+    font-size: clamp(1.4rem, 7.5vw, 1.9rem);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .contact__email:hover,
+  .contact__email:focus-visible {
+    transform: none; /* scale(1.06) would push past the edge */
+  }
+
+  .work-item {
+    padding: var(--sp-6) var(--sp-1);
+  }
+  .work-item__title {
+    font-size: var(--fs-300); /* fs-400 is too big on a phone */
+  }
+  .panel__card {
+    padding: var(--sp-8) var(--sp-6);
+  }
+  .panel__title {
+    font-size: clamp(1.6rem, 8vw, 2.4rem);
+  }
+}
