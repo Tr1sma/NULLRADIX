@@ -30,6 +30,7 @@
 param(
     [string]$Server = "root@31.70.104.128",
     [string]$AppDir = "/var/www/nullradix",
+    [string]$IdentityFile = (Join-Path $env:USERPROFILE ".ssh\id_ed25519_demo"),
     [switch]$SkipBuild,
     [switch]$NoPause
 )
@@ -72,6 +73,12 @@ try {
     $scp = Resolve-Exe 'scp'
     $ssh = Resolve-Exe 'ssh'
 
+    # Demo-Key explizit: der Default-Key (~/.ssh/id_ed25519) zeigt auf NOOSE-Prod.
+    if (-not (Test-Path $IdentityFile)) {
+        throw "SSH-Key nicht gefunden: $IdentityFile (Demo-Key fuer nullradix)."
+    }
+    $key = @('-i', $IdentityFile)
+
     # 1) Bauen. dist vorher leeren, damit keine Altlasten frueherer Builds mitwandern.
     if (-not $SkipBuild) {
         if (-not (Test-Path (Join-Path $PSScriptRoot "node_modules"))) {
@@ -94,7 +101,7 @@ try {
     Invoke-Step "Packe Artefakt (tar)" { tar -czf $tarball -C $dist . }
 
     # 3) Auf den Server kopieren
-    Invoke-Step "Lade auf Server hoch" { & $scp $tarball "${Server}:/tmp/nullradix-dist.tgz" }
+    Invoke-Step "Lade auf Server hoch" { & $scp @key $tarball "${Server}:/tmp/nullradix-dist.tgz" }
 
     # 4) Auf dem Server ausrollen: Web-Verzeichnis leeren, neu befuellen, Rechte setzen.
     $remote = "rm -rf $AppDir/*" +
@@ -102,7 +109,7 @@ try {
               " && chown -R www-data:www-data $AppDir" +
               " && rm -f /tmp/nullradix-dist.tgz" +
               " && curl -s -o /dev/null -w 'Check: HTTP %{http_code} (%{size_download} bytes)\n' -H 'Host: nullradix.de' http://127.0.0.1/"
-    Invoke-Step "Rolle auf dem Server aus" { & $ssh $Server $remote }
+    Invoke-Step "Rolle auf dem Server aus" { & $ssh @key $Server $remote }
 
     # 5) Lokales Artefakt aufraeumen
     Remove-Item $tarball -Force -ErrorAction SilentlyContinue
