@@ -112,7 +112,7 @@ try {
               " && tar -xzf /tmp/nullradix-dist.tgz -C $AppDir" +
               " && chown -R www-data:www-data $AppDir" +
               " && rm -f /tmp/nullradix-dist.tgz" +
-              " && curl -s -o /dev/null -w 'Check: HTTP %{http_code} (%{size_download} bytes)\n' -H 'Host: $HealthHost' http://127.0.0.1/"
+              " && curl -sL -o /dev/null -w 'Check: HTTP %{http_code} (%{size_download} bytes)\n' -H 'Host: $HealthHost' http://127.0.0.1/"
     Invoke-Step "Rolle auf dem Server aus" { & $ssh @key $Server $remote }
 
     # 5) Lokales Artefakt aufraeumen
