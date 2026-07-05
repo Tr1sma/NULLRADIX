@@ -11,7 +11,7 @@
 
 .EXAMPLE
     .\deploy.ps1
-        Standard-Deploy nach root@31.70.104.128:/var/www/nullradix.
+        Standard-Deploy nach root@195.20.225.12:/var/www/nullradix (Main-Server).
 
 .EXAMPLE
     .\deploy.ps1 -SkipBuild
@@ -28,9 +28,10 @@
 
 [CmdletBinding()]
 param(
-    [string]$Server = "root@31.70.104.128",
+    [string]$Server = "root@195.20.225.12",
     [string]$AppDir = "/var/www/nullradix",
-    [string]$IdentityFile = (Join-Path $env:USERPROFILE ".ssh\id_ed25519_demo"),
+    [string]$IdentityFile = (Join-Path $env:USERPROFILE ".ssh\id_ed25519"),
+    [string]$HealthHost = "www.nullradix.de",
     [switch]$SkipBuild,
     [switch]$NoPause
 )
@@ -73,9 +74,12 @@ try {
     $scp = Resolve-Exe 'scp'
     $ssh = Resolve-Exe 'ssh'
 
-    # Demo-Key explizit: der Default-Key (~/.ssh/id_ed25519) zeigt auf NOOSE-Prod.
+    # Main-Server (195.20.225.12) laeuft ueber ~/.ssh/id_ed25519. Dort liegt AUCH die
+    # NOOSE-Prod (noose.info -> :5000). NULLRADIX hat einen EIGENEN nginx-Block
+    # (server_name www.nullradix.de) und ein eigenes Verzeichnis; dieses Deploy
+    # fasst ausschliesslich $AppDir an und laesst NOOSE komplett unberuehrt.
     if (-not (Test-Path $IdentityFile)) {
-        throw "SSH-Key nicht gefunden: $IdentityFile (Demo-Key fuer nullradix)."
+        throw "SSH-Key nicht gefunden: $IdentityFile"
     }
     $key = @('-i', $IdentityFile)
 
@@ -108,14 +112,14 @@ try {
               " && tar -xzf /tmp/nullradix-dist.tgz -C $AppDir" +
               " && chown -R www-data:www-data $AppDir" +
               " && rm -f /tmp/nullradix-dist.tgz" +
-              " && curl -s -o /dev/null -w 'Check: HTTP %{http_code} (%{size_download} bytes)\n' -H 'Host: nullradix.de' http://127.0.0.1/"
+              " && curl -s -o /dev/null -w 'Check: HTTP %{http_code} (%{size_download} bytes)\n' -H 'Host: $HealthHost' http://127.0.0.1/"
     Invoke-Step "Rolle auf dem Server aus" { & $ssh @key $Server $remote }
 
     # 5) Lokales Artefakt aufraeumen
     Remove-Item $tarball -Force -ErrorAction SilentlyContinue
 
     Write-Host ""
-    Write-Host "Fertig. https://nullradix.de ist aktualisiert." -ForegroundColor Green
+    Write-Host "Fertig. https://$HealthHost ist aktualisiert." -ForegroundColor Green
     Write-Host "Im Browser ggf. mit Strg+F5 hart neu laden (Asset-Cache)." -ForegroundColor Green
 }
 catch {
