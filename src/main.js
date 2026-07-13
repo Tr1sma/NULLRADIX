@@ -10,6 +10,7 @@ import { renderProjects } from "./modules/projects.js";
 import { createPanel } from "./modules/panel.js";
 import { renderField } from "./field/field.js";
 import { initTypo } from "./modules/typo.js";
+import { initScrollFill } from "./modules/scrollfill.js";
 import { initScroll } from "./modules/scroll.js";
 import { initNav } from "./modules/nav.js";
 
@@ -28,6 +29,7 @@ function boot() {
   projectsApi.onClear = () => fieldApi.clearNode();
 
   initTypo();
+  initScrollFill();
   initNav();
   initScroll();
 }

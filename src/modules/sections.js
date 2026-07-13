@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import { qs, qsa, el } from '../utils/dom.js';
-import { profile, about, skills, experience, socials } from '../data/content.js';
+import { profile, about, marquee, skills, experience, socials } from '../data/content.js';
 import { createScramble } from '../utils/scramble.js';
 import { env } from './env.js';
 
@@ -22,6 +22,17 @@ export function renderSections() {
         el('dd', { class: 'about__v' }, p.v),
       ])
     );
+  }
+
+  // marquee band: two identical copies so translateX(-50%) loops seamlessly
+  const marqueeTrack = qs('[data-marquee-track]');
+  if (marqueeTrack) {
+    const seq = () =>
+      marquee.flatMap((w) => [
+        el('span', { class: 'marquee__word' }, w),
+        el('span', { class: 'marquee__sep', 'aria-hidden': 'true' }, '+'),
+      ]);
+    marqueeTrack.replaceChildren(...seq(), ...seq());
   }
 
   qsa('[data-profile-email]').forEach((node) => {

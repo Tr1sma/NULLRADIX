@@ -132,6 +132,17 @@ export const about = {
   ],
 };
 
+/** @type {string[]} words riding the marquee band under the hero */
+export const marquee = [
+  "SOFTWARE",
+  "SYSTEMS",
+  "INTERFACES",
+  "INFRASTRUCTURE",
+  "TOOLS",
+  "DURABLE",
+  "FAST",
+];
+
 /** @type {{group:string, items:string[]}[]} */
 export const skills = [
   { group: "Languages", items: ["C#", "C++", "JavaScript", "Lua", "SQL"] },
@@ -204,4 +215,4 @@ export const socials = [
   },
 ];
 
-export default { profile, axes, about, projects, skills, experience, socials };
+export default { profile, axes, about, projects, marquee, skills, experience, socials };

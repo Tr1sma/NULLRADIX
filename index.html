@@ -70,13 +70,17 @@
         </div>
       </section>
 
+      <div class="marquee" data-marquee aria-hidden="true">
+        <div class="marquee__track" data-marquee-track></div>
+      </div>
+
       <section id="about" class="section shell" aria-labelledby="about-h">
         <div class="section__head" data-reveal>
           <p class="label">About</p>
           <h2 id="about-h" class="section__title">How I work</h2>
         </div>
         <div class="about" data-reveal>
-          <p class="about__lead" data-about-lead></p>
+          <p class="about__lead" data-about-lead data-scroll-fill></p>
           <dl class="about__principles" data-about-principles></dl>
         </div>
       </section>
@@ -102,15 +106,25 @@
         <ol class="timeline" data-experience><!-- JS --></ol>
       </section>
 
-      <section id="contact" class="section shell" aria-labelledby="contact-h">
-        <div class="section__head" data-reveal>
-          <p class="label">Contact</p>
-          <h2 id="contact-h" class="section__title">Let's make something good</h2>
-        </div>
-        <div class="contact__body" data-reveal>
-          <a class="contact__email" href="mailto:tristan@nullradix.de" data-profile-email data-text="tristan@nullradix.de">tristan@nullradix.de</a>
-          <button class="btn" type="button" data-copy-email>Copy email</button>
-          <ul class="socials" data-socials><!-- JS --></ul>
+      <section id="contact" class="section" aria-labelledby="contact-h">
+        <div class="shell contact">
+          <div class="contact__top" data-reveal>
+            <p class="label">Contact — Open channel</p>
+            <span class="contact__index" aria-hidden="true">04</span>
+          </div>
+
+          <h2 id="contact-h" class="contact__slogan" data-reveal>Have a system worth building?</h2>
+
+          <div class="contact__body" data-reveal>
+            <div class="contact__signal">
+              <p class="label contact__cue">Transmit a signal</p>
+              <a class="contact__email" href="mailto:tristan@nullradix.de" data-profile-email data-text="tristan@nullradix.de">tristan@nullradix.de</a>
+            </div>
+            <div class="contact__actions">
+              <button class="btn" type="button" data-copy-email>Copy email</button>
+              <ul class="socials" data-socials><!-- JS --></ul>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -135,12 +149,40 @@
       <div class="panel__backdrop" data-panel-close></div>
       <article class="panel__card" tabindex="-1" data-panel-card>
         <button class="panel__close" type="button" aria-label="Close" data-panel-close>×</button>
-        <p class="panel__index" data-panel-index></p>
-        <h3 class="panel__title" id="panel-title" data-panel-title></h3>
+
+        <header class="panel__head">
+          <span class="panel__num" data-panel-index></span>
+          <span class="panel__total panel__reveal" style="--rd:80ms" data-panel-total></span>
+          <span class="panel__eyebrow panel__reveal" style="--rd:100ms">Selected work</span>
+        </header>
+
+        <div class="panel__titlerow">
+          <h3 class="panel__title" id="panel-title" data-panel-title></h3>
+          <span class="panel__status panel__reveal" style="--rd:200ms" data-panel-status hidden></span>
+        </div>
         <p class="panel__meta" data-panel-meta></p>
+
         <p class="panel__blurb" data-panel-blurb></p>
-        <ul class="tags" data-panel-tech></ul>
-        <div class="panel__links" data-panel-links></div>
+
+        <ul class="tags panel__reveal" style="--rd:240ms" data-panel-tech></ul>
+        <div class="panel__links panel__reveal" style="--rd:280ms" data-panel-links></div>
+
+        <nav class="panel__nav panel__reveal" style="--rd:320ms" aria-label="Projects">
+          <button class="panel__nav-btn" type="button" data-panel-prev>
+            <span class="panel__nav-arrow" aria-hidden="true">‹</span>
+            <span class="panel__nav-col">
+              <span class="panel__nav-label">Prev</span>
+              <span class="panel__nav-name"></span>
+            </span>
+          </button>
+          <button class="panel__nav-btn panel__nav-btn--next" type="button" data-panel-next>
+            <span class="panel__nav-col">
+              <span class="panel__nav-label">Next</span>
+              <span class="panel__nav-name"></span>
+            </span>
+            <span class="panel__nav-arrow" aria-hidden="true">›</span>
+          </button>
+        </nav>
       </article>
     </div>
 

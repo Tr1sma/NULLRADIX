@@ -1,6 +1,9 @@
 import { qs, qsa, el } from '../utils/dom.js';
 import { projects } from '../data/content.js';
 
+/** Raw status → display label; the dot + uppercasing live in CSS. */
+const STATUS_LABEL = { live: 'Live', wip: 'In Progress', archived: 'Archived' };
+
 /** Shared project detail dialog. */
 export function createPanel() {
   const root = qs('[data-panel]');
@@ -8,6 +11,7 @@ export function createPanel() {
   let lastFocus = null;
   let closeTimer = 0;
   let typers = [];
+  let currentIndex = 0; // 0-based index into `projects`
 
   /** Cancel any in-flight typewriters, snapping their text to the final string. */
   function clearTypers() {
@@ -70,19 +74,37 @@ export function createPanel() {
     card.style.setProperty('--oy', `${s.top + s.height / 2 - c.top}px`);
   }
 
-  function open(project, index, source) {
-    clearTimeout(closeTimer);
-    clearTypers();
-    lastFocus = document.activeElement;
+  /** Label a prev/next button with its target project. */
+  function setNav(btn, project) {
+    const nameEl = qs('.panel__nav-name', btn);
+    if (nameEl) nameEl.textContent = project.name;
+    btn.setAttribute('aria-label', `View ${project.name}`);
+  }
 
-    const num = String(index || projects.indexOf(project) + 1).padStart(2, '0');
+  /** Populate the card from `projects[currentIndex]` and cascade the reveal. */
+  function render() {
+    clearTypers();
+    const project = projects[currentIndex];
     const total = String(projects.length).padStart(2, '0');
-    const meta = [project.year, project.status].filter(Boolean).join(' · ');
-    // type the text fields out in a quick cascade as the card lands
-    typeText(qs('[data-panel-index]', root), `${num} / ${total}`, 60, 200);
+    const num = String(currentIndex + 1).padStart(2, '0');
+
+    // the four typed fields cascade out as the card lands (status now has its own badge)
+    typeText(qs('[data-panel-index]', root), num, 60, 200);
+    qs('[data-panel-total]', root).textContent = `/ ${total}`; // constant, not typed
     typeText(qs('[data-panel-title]', root), project.name, 140, 320);
-    typeText(qs('[data-panel-meta]', root), meta, 300, 220);
+    typeText(qs('[data-panel-meta]', root), String(project.year), 300, 220);
     typeText(qs('[data-panel-blurb]', root), project.blurb, 360, 520);
+
+    const status = qs('[data-panel-status]', root);
+    if (project.status && STATUS_LABEL[project.status]) {
+      status.hidden = false;
+      status.dataset.status = project.status;
+      status.textContent = STATUS_LABEL[project.status];
+    } else {
+      status.hidden = true;
+      status.removeAttribute('data-status');
+      status.textContent = '';
+    }
 
     qs('[data-panel-tech]', root).replaceChildren(
       ...project.tech.map((t) => el('li', { class: 'tag' }, t))
@@ -93,9 +115,29 @@ export function createPanel() {
       )
     );
 
+    const n = projects.length;
+    setNav(qs('[data-panel-prev]', root), projects[(currentIndex - 1 + n) % n]);
+    setNav(qs('[data-panel-next]', root), projects[(currentIndex + 1) % n]);
+  }
+
+  /** Step to another project without closing - re-types the text, keeps the card in place. */
+  function go(delta) {
+    const n = projects.length;
+    currentIndex = (currentIndex + delta + n) % n;
+    render();
+  }
+
+  function open(project, index, source) {
+    clearTimeout(closeTimer);
+    lastFocus = document.activeElement;
+
+    const zero = Number.isFinite(index) ? index - 1 : projects.indexOf(project);
+    currentIndex = zero >= 0 ? zero : 0;
+    render();
+
     root.hidden = false;
     document.body.style.overflow = 'hidden';
-    setOrigin(source);
+    setOrigin(source); // grow-from-click only on the initial open, not on nav
     void root.offsetWidth; // commit the closed state, then transition into the open one
     root.classList.add('is-open');
     card.focus({ preventScroll: true });
@@ -111,11 +153,19 @@ export function createPanel() {
     lastFocus?.focus?.();
     closeTimer = setTimeout(() => {
       root.hidden = true;
-    }, 420); // hold for the close transition (matches --dur) before removing from view
+    }, 420); // hold for the close transition (matches --dur-modal) before removing from view
   }
 
   function onKey(e) {
     if (e.key === 'Escape') return close();
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      return go(-1);
+    }
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      return go(1);
+    }
     if (e.key === 'Tab') {
       const f = qsa('a, button, [tabindex]:not([tabindex="-1"])', root).filter(
         (n) => !n.hasAttribute('disabled') && n.offsetParent !== null
@@ -134,6 +184,8 @@ export function createPanel() {
   }
 
   qsa('[data-panel-close]', root).forEach((b) => b.addEventListener('click', close));
+  qs('[data-panel-prev]', root).addEventListener('click', () => go(-1));
+  qs('[data-panel-next]', root).addEventListener('click', () => go(1));
 
   return { open, close };
 }
