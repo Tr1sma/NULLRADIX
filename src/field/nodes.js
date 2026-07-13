@@ -85,12 +85,14 @@ export function createNodes(projects) {
     return lineBest;
   }
 
-  function setHovered(i) {
+  function setHovered(i, animate = true) {
     // kick off the decode flourish whenever a new label lights up; the field
     // drives the frames (its rAF loop, or a short pump when not animating)
-    if (i >= 0 && i !== scrambleFor) {
+    if (animate && i >= 0 && i !== scrambleFor) {
       scrambleFor = i;
       scrambleStart = performance.now();
+    } else if (!animate) {
+      scrambleFor = -1;
     }
     hovered = i;
   }

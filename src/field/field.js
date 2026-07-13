@@ -4,7 +4,6 @@ import { createLattice } from './particles.js';
 import { drawCrosshair } from './crosshair.js';
 import { createNodes } from './nodes.js';
 import { createHud } from './hud.js';
-import { SCRAMBLE_MS } from '../utils/scramble.js';
 
 const noop = () => ({ highlightNode() {}, clearNode() {}, destroy() {} });
 
@@ -42,6 +41,7 @@ export function renderField({ panel, projectsApi } = {}) {
   let rafScramble = 0;
   let lastT = 0;
   let visible = true;
+  let idleTimer = 0;
 
   const animated = () => env.mode === 'animated';
 
@@ -103,7 +103,9 @@ export function renderField({ panel, projectsApi } = {}) {
    * animated mode - the loop already repaints every frame.
    */
   function pumpScramble() {
-    if (animated() || rafScramble) return;
+    // If the main loop is idle (the normal state while the list drives the
+    // sticky field), briefly paint just enough frames for the label decode.
+    if (rafLoop || rafScramble) return;
     const step = () => {
       paint(false);
       rafScramble = nodes.isScrambling() ? requestAnimationFrame(step) : 0;
@@ -137,15 +139,13 @@ export function renderField({ panel, projectsApi } = {}) {
   function setHover(i, fromList) {
     if (i === hovered) return;
     hovered = i;
-    nodes.setHovered(i);
+    nodes.setHovered(i, !env.reducedMotion);
     if (!fromList) {
       if (i >= 0) projectsApi?.highlight?.(i);
       else projectsApi?.clearHighlight?.();
     }
-    if (!animated()) {
-      if (i >= 0) pumpScramble();
-      else renderOnce();
-    }
+    if (i >= 0) pumpScramble();
+    else if (!rafLoop) renderOnce();
   }
   function onMove(e) {
     const p = toLocal(e);
@@ -155,13 +155,23 @@ export function renderField({ panel, projectsApi } = {}) {
     const h = nodes.hitTest(p.x, p.y);
     canvas.style.cursor = h >= 0 ? 'pointer' : '';
     setHover(h, false);
-    if (!animated()) renderOnce(); // reflect the live coord without a loop
+    if (animated()) {
+      clearTimeout(idleTimer);
+      startLoop();
+    } else renderOnce(); // reflect the live coord without a loop
   }
   function onLeave() {
     pointer.on = false;
     canvas.style.cursor = '';
     setHover(-1, false);
-    renderOnce();
+    if (animated()) {
+      clearTimeout(idleTimer);
+      // Let the displaced lattice settle, then stop consuming frames entirely.
+      idleTimer = window.setTimeout(() => {
+        stopLoop();
+        renderOnce();
+      }, 900);
+    } else renderOnce();
   }
   function onClick(e) {
     const p = toLocal(e);
@@ -194,7 +204,7 @@ export function renderField({ panel, projectsApi } = {}) {
     new IntersectionObserver(
       (entries) => {
         visible = entries[0]?.isIntersecting ?? true;
-        if (visible) (animated() ? startLoop() : renderOnce());
+        if (visible) (animated() && pointer.on ? startLoop() : renderOnce());
         else stopLoop();
       },
       { threshold: 0 }
@@ -210,7 +220,7 @@ export function renderField({ panel, projectsApi } = {}) {
     ffLabel = readVar('--ff-label') || ffLabel;
     stopLoop();
     resize();
-    if (animated() && visible) startLoop();
+    if (animated() && visible && pointer.on) startLoop();
   });
 
   // redraw once webfonts land (canvas labels otherwise fall back on first paint)
@@ -220,7 +230,7 @@ export function renderField({ panel, projectsApi } = {}) {
 
   // initial
   resize();
-  if (animated()) startLoop();
+  renderOnce();
 
   return {
     // list → field highlight (no callback back into the list)
@@ -232,6 +242,7 @@ export function renderField({ panel, projectsApi } = {}) {
     },
     destroy() {
       stopLoop();
+      clearTimeout(idleTimer);
       if (rafOnce) cancelAnimationFrame(rafOnce);
       if (rafScramble) cancelAnimationFrame(rafScramble);
     },

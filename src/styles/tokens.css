@@ -1,70 +1,81 @@
 :root {
-  /* ---- monochrome palette (dark) ---- */
-  --c-void: #0c0c0d; /* page background */
-  --c-surface: #131315; /* cards / panels */
-  --c-line: #242428; /* hairlines / borders */
-  --c-ghost: #121214; /* giant background wordmark */
-  --c-far: #46464b; /* dim / tertiary text */
-  --c-mid: #84848b; /* secondary text */
-  --c-near: #fafafb; /* primary text */
-  --c-muted: color-mix(in oklab, var(--c-near) 60%, var(--c-void)); /* AA body secondary */
-  --c-origin: #fafafb; /* field accent (ORIGIN / active node) - monochrome for now; swap to a hue to re-introduce the README accent */
+  /* Monochrome signal palette */
+  --c-void: #050505;
+  --c-surface: #0b0b0c;
+  --c-elevated: #111113;
+  --c-line: #29292c;
+  --c-line-bright: #404044;
+  --c-ghost: #101012;
+  --c-far: #77777d;
+  --c-mid: #a2a2a7;
+  --c-muted: #bcbcc0;
+  --c-near: #f4f4f1;
+  --c-origin: #ffffff;
+  --c-paper: #ecece7;
+  --c-ink: #09090a;
 
-  /* ---- type ---- */
+  /* Type */
   --ff-display: 'Roboto Flex Variable', system-ui, sans-serif;
   --ff-body: 'Inter Variable', system-ui, sans-serif;
   --ff-label: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
 
-  /* fluid scale */
-  --fs-100: clamp(0.72rem, 0.68rem + 0.2vw, 0.8rem); /* labels */
-  --fs-200: clamp(0.95rem, 0.9rem + 0.25vw, 1.06rem); /* body */
-  --fs-300: clamp(1.1rem, 0.95rem + 0.7vw, 1.5rem);
-  --fs-400: clamp(1.6rem, 1.1rem + 2vw, 2.6rem); /* h2 */
-  --fs-600: clamp(1.9rem, 1.1rem + 3.4vw, 4rem); /* big project numbers / contact */
-  --fs-hero: clamp(2.2rem, 0.4rem + 10vw, 9rem); /* hero headline */
+  --fs-100: clamp(0.69rem, 0.66rem + 0.14vw, 0.78rem);
+  --fs-200: clamp(0.96rem, 0.92rem + 0.2vw, 1.08rem);
+  --fs-300: clamp(1.18rem, 1.02rem + 0.68vw, 1.62rem);
+  --fs-400: clamp(1.7rem, 1.18rem + 2.3vw, 3.25rem);
+  --fs-500: clamp(2.45rem, 1.25rem + 4.6vw, 5.8rem);
+  --fs-600: clamp(3.1rem, 1.35rem + 6vw, 7.6rem);
+  --fs-hero: clamp(3.45rem, 0.65rem + 10vw, 10.5rem);
 
-  /* spacing (8px) */
+  /* Space */
   --sp-1: 0.25rem;
   --sp-2: 0.5rem;
   --sp-3: 0.75rem;
   --sp-4: 1rem;
+  --sp-5: 1.25rem;
   --sp-6: 1.5rem;
   --sp-8: 2rem;
+  --sp-10: 2.5rem;
   --sp-12: 3rem;
   --sp-16: 4rem;
+  --sp-20: 5rem;
   --sp-24: 6rem;
   --sp-32: 8rem;
+  --sp-40: 10rem;
 
-  /* layout */
-  --container: 76rem;
-  --measure: 46ch;
-  --gutter: clamp(1.25rem, 6vw, 4.5rem);
-  --radius: 6px;
+  /* Layout */
+  --container: 90rem;
+  --measure: 48ch;
+  --gutter: clamp(1.25rem, 4.5vw, 5rem);
+  --frame: clamp(8px, 1vw, 14px);
+  --radius: 1px;
   --hairline: 1px solid var(--c-line);
 
-  /* z */
-  --z-ghost: 0;
-  --z-grain: 1;
+  /* Layers */
+  --z-ambient: 0;
   --z-base: 2;
+  --z-frame: 30;
   --z-header: 50;
   --z-panel: 90;
   --z-skip: 100;
 
-  /* motion */
-  --dur-fast: 200ms;
+  /* Motion */
+  --dur-fast: 180ms;
   --dur: 420ms;
   --dur-slow: 900ms;
-  /* click-triggered modal open/close - intentionally plays under reduced motion */
-  --dur-modal: 420ms;
+  --dur-modal: 520ms;
   --ease: cubic-bezier(0.2, 1, 0.3, 1);
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --scroll-progress: 0;
+  --pointer-x: 50vw;
+  --pointer-y: 50vh;
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
-    /* ambient/scroll loops collapse; --dur-modal is deliberately left intact */
     --dur-fast: 0ms;
     --dur: 0ms;
     --dur-slow: 0ms;
+    --dur-modal: 0ms;
   }
 }

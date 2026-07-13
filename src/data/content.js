@@ -132,6 +132,13 @@ export const about = {
   ],
 };
 
+/** Small proof points used in the about ledger. */
+export const metrics = [
+  { value: '10+', label: 'years building' },
+  { value: '12', label: 'open-source packages' },
+  { value: '10k+', label: 'package downloads' },
+];
+
 /** @type {{group:string, items:string[]}[]} */
 export const skills = [
   { group: "Languages", items: ["C#", "C++", "JavaScript", "Lua", "SQL"] },
@@ -204,4 +211,4 @@ export const socials = [
   },
 ];
 
-export default { profile, axes, about, projects, skills, experience, socials };
+export default { profile, axes, about, metrics, projects, skills, experience, socials };

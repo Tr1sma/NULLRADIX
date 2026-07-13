@@ -1,7 +1,9 @@
 import "./styles/index.css";
 
 // self-hosted variable fonts
-import "@fontsource-variable/roboto-flex/full.css"; // wght + wdth + opsz axes
+// The wdth build contains the two axes used by the interface (weight + width)
+// without shipping Roboto Flex's much heavier full axis set.
+import "@fontsource-variable/roboto-flex/wdth.css";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/space-grotesk";
 
@@ -12,11 +14,9 @@ import { renderField } from "./field/field.js";
 import { initTypo } from "./modules/typo.js";
 import { initScroll } from "./modules/scroll.js";
 import { initNav } from "./modules/nav.js";
+import { initInterface } from "./modules/interface.js";
 
 function boot() {
-  // disable the context menu across the entire page
-  document.addEventListener("contextmenu", (e) => e.preventDefault());
-
   renderSections();
 
   const panel = createPanel();
@@ -25,9 +25,9 @@ function boot() {
   // the plotted view of the same projects - bi-directional highlight with the list
   const fieldApi = renderField({ panel, projectsApi });
   projectsApi.onHighlight = (i) => fieldApi.highlightNode(i);
-  projectsApi.onClear = () => fieldApi.clearNode();
 
   initTypo();
+  initInterface();
   initNav();
   initScroll();
 }

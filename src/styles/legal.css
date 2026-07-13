@@ -1,93 +1,208 @@
-/* Legal pages (Impressum, Datenschutz). Reuses the site tokens + base, adds a
-   readable prose column. .footer-legal lives in layout.css (shared footer). */
-@import './index.css';
+/* Quiet, lightweight legal-page entry. It intentionally avoids loading the
+   portfolio's canvas, scene, panel and animation styles. */
+@import './tokens.css';
+@import './base.css';
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% -10%, #19191b 0, transparent 42%), var(--c-void);
+}
+
+.ambient__grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.34;
+  background-image:
+    linear-gradient(to right, rgb(41 41 44 / 0.55) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(41 41 44 / 0.38) 1px, transparent 1px);
+  background-size: clamp(44px, 5vw, 76px) clamp(44px, 5vw, 76px);
+  -webkit-mask-image: radial-gradient(ellipse 78% 66% at 50% 36%, #000 0, transparent 82%);
+  mask-image: radial-gradient(ellipse 78% 66% at 50% 36%, #000 0, transparent 82%);
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.027;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+}
+
+.site-header,
+main,
+.site-footer {
+  position: relative;
+  z-index: 2;
+}
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-header);
+  padding: 0.55rem var(--gutter) 0;
+  background: rgb(5 5 5 / 0.86);
+  border-bottom: 1px solid rgb(255 255 255 / 0.09);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  backdrop-filter: blur(18px) saturate(1.2);
+}
+
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, var(--container));
+  min-height: 3.5rem;
+  margin-inline: auto;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 44px;
+  color: var(--c-near);
+  font-family: var(--ff-label);
+  font-size: var(--fs-100);
+  font-weight: 620;
+  letter-spacing: 0.16em;
+}
+
+.brand__mark {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid var(--c-line-bright);
+  font-size: 0.66rem;
+  letter-spacing: 0;
+}
+
+.site-nav,
+.footer-legal {
+  display: flex;
+  gap: var(--sp-6);
+  font-family: var(--ff-label);
+  font-size: var(--fs-100);
+}
+
+.site-nav a,
+.footer-legal a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--c-mid);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible,
+.footer-legal a:hover,
+.footer-legal a:focus-visible { color: var(--c-near); }
 
 .legal {
   width: min(100% - calc(var(--gutter) * 2), var(--container));
   margin-inline: auto;
-  /* clear the fixed header */
   padding-block: clamp(var(--sp-24), 18vh, var(--sp-32)) var(--sp-16);
 }
 
-.legal__head {
-  margin-bottom: var(--sp-16);
-}
+.legal__head { margin-bottom: var(--sp-16); }
+
 .legal__title {
-  font-family: var(--ff-display);
-  font-size: var(--fs-400);
   margin-top: var(--sp-4);
   color: var(--c-near);
+  font-family: var(--ff-display);
+  font-size: var(--fs-400);
   font-variation-settings: 'wght' 600, 'wdth' 90;
 }
 
-.legal__body {
-  max-width: 64ch;
-}
-.legal__body > * + * {
-  margin-top: var(--sp-4);
-}
+.legal__body { max-width: 64ch; }
+.legal__body > * + * { margin-top: var(--sp-4); }
+
 .legal__body h2 {
+  margin-top: var(--sp-12);
+  color: var(--c-mid);
   font-family: var(--ff-label);
   font-size: var(--fs-100);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--c-mid);
-  margin-top: var(--sp-12);
 }
-.legal__body h2:first-child {
-  margin-top: 0;
-}
+
+.legal__body h2:first-child { margin-top: 0; }
+
 .legal__body p,
 .legal__body li {
   color: var(--c-muted);
   font-size: var(--fs-200);
   line-height: 1.7;
 }
+
 .legal__body address {
-  font-style: normal;
   color: var(--c-near);
-  white-space: pre-line; /* keep the line breaks typed in the markup */
+  font-style: normal;
+  white-space: pre-line;
 }
+
 .legal__body a {
   color: var(--c-near);
   text-decoration: underline;
+  text-decoration-color: var(--c-line-bright);
   text-underline-offset: 3px;
-  text-decoration-color: var(--c-line);
-  transition: text-decoration-color var(--dur-fast) var(--ease);
 }
+
 .legal__body a:hover,
-.legal__body a:focus-visible {
-  text-decoration-color: var(--c-near);
-}
-.legal__body ul {
-  list-style: none;
-  padding: 0;
-}
-.legal__body ul li {
-  position: relative;
-  padding-left: var(--sp-6);
-}
-.legal__body ul li::before {
-  content: '·';
-  position: absolute;
-  left: var(--sp-2);
-  color: var(--c-far);
-}
+.legal__body a:focus-visible { text-decoration-color: var(--c-near); }
+
+.legal__body ul { list-style: none; padding: 0; }
+.legal__body ul li { position: relative; padding-left: var(--sp-6); }
+.legal__body ul li::before { content: '·'; position: absolute; left: var(--sp-2); color: var(--c-far); }
+
 .legal__updated {
   margin-top: var(--sp-16);
+  color: var(--c-far);
   font-family: var(--ff-label);
   font-size: var(--fs-100);
   letter-spacing: 0.1em;
-  color: var(--c-far);
 }
 
-/* placeholder marker — fill these in, then remove the highlight class.
-   Easy to grep for: search the codebase for "legal-todo". */
-.legal-todo {
-  color: var(--c-void);
-  background: var(--c-near);
-  padding: 0 0.35em;
-  border-radius: 3px;
+.site-footer {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr auto auto;
+  align-items: end;
+  gap: var(--sp-8);
+  padding: var(--sp-16) var(--gutter) max(var(--sp-16), calc(env(safe-area-inset-bottom) + var(--sp-8)));
+  border-top: var(--hairline);
+  color: var(--c-far);
   font-family: var(--ff-label);
-  font-size: 0.9em;
+  font-size: var(--fs-100);
+  line-height: 1.5;
+}
+
+.footer-brand {
+  align-self: start;
+  color: var(--c-near);
+  font-family: var(--ff-display);
+  font-size: var(--fs-300);
+  font-variation-settings: 'wght' 650, 'wdth' 78;
+}
+
+.footer-brand span { color: var(--c-far); font-family: var(--ff-label); font-size: 0.65rem; vertical-align: top; }
+.footer-time { text-align: right; }
+
+@media (max-width: 700px) {
+  :root { --gutter: clamp(1.15rem, 5vw, 1.8rem); }
+  .site-header { padding-inline: var(--gutter); }
+  .brand__name { display: none; }
+  .legal { padding-top: 7rem; }
+  .site-footer { grid-template-columns: 1fr 1fr; }
+  .footer-legal { justify-self: end; }
+  .footer-time { text-align: left; }
+}
+
+@media (max-width: 440px) {
+  .site-footer { grid-template-columns: 1fr; }
+  .footer-legal { justify-self: start; }
 }

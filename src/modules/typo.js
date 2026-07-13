@@ -1,106 +1,124 @@
 import gsap from 'gsap';
 import { env } from './env.js';
 
+const REST = { weight: 620, width: 76 };
+
 /**
- * Kinetic hero type: split into letters, play a line-rise + "inhale" entrance,
- * then make each glyph's weight/width swell toward the cursor like a spotlight.
+ * Kinetic hero type. Glyph geometry is measured in one read batch and pointer
+ * updates are event-driven, avoiding the former permanent layout-reading loop.
  */
 export function initTypo() {
   const title = document.getElementById('hero-title');
-  if (!title) return;
+  const hero = title?.closest('.hero');
+  if (!title || !hero) return;
 
   const chars = [];
-  title.querySelectorAll('[data-letters]').forEach((el) => {
-    const text = el.textContent.trim();
-    el.textContent = '';
-    for (const c of text) {
-      if (c === ' ') {
-        el.appendChild(document.createTextNode(' '));
+  title.querySelectorAll('[data-letters]').forEach((line) => {
+    const text = line.textContent.trim();
+    line.textContent = '';
+    for (const character of text) {
+      if (character === ' ') {
+        line.appendChild(document.createTextNode(' '));
         continue;
       }
       const span = document.createElement('span');
       span.className = 'ch';
-      span.textContent = c;
-      el.appendChild(span);
+      span.textContent = character;
+      line.appendChild(span);
       chars.push(span);
     }
   });
 
   const lines = title.querySelectorAll('.line__inner');
   const sub = document.querySelector('.hero__sub .line__inner');
+  const setAxes = (node, weight, width) => {
+    node.style.fontVariationSettings = `'wght' ${Math.round(weight)}, 'wdth' ${Math.round(width)}`;
+  };
+  const setAll = (weight, width) => chars.forEach((char) => setAxes(char, weight, width));
 
   if (env.reducedMotion) {
-    // everything already visible via CSS; just settle the weight
-    chars.forEach((s) => (s.style.fontVariationSettings = "'wght' 640,'wdth' 78,'opsz' 144"));
+    setAll(REST.weight, REST.width);
     return;
   }
 
-  // ---- entrance: lines rise, then the word inhales to bold+condensed ----
-  const tl = gsap.timeline({ delay: 0.15 });
-  tl.from(lines, {
-    yPercent: 115,
-    rotate: 6,
-    opacity: 0,
-    duration: 0.95,
-    ease: 'power4.out',
-    stagger: 0.09,
-  });
-  tl.from(
-    chars,
-    {
-      // start thin + wide, animate to settled weight (the "inhale")
-      onStart() {
-        chars.forEach((s) => (s.style.fontVariationSettings = "'wght' 200,'wdth' 125,'opsz' 144"));
-      },
-      duration: 0.9,
-      ease: 'power2.inOut',
-      stagger: { each: 0.012, from: 'center' },
-      onUpdate() {
-        const p = this.progress();
-        const w = Math.round(200 + (640 - 200) * p);
-        const wd = Math.round(125 + (78 - 125) * p);
-        chars.forEach((s) => (s.style.fontVariationSettings = `'wght' ${w},'wdth' ${wd},'opsz' 144`));
-      },
-    },
-    '-=0.45'
-  );
-  if (sub) tl.from(sub, { yPercent: 120, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6');
+  const axes = { weight: 210, width: 128 };
+  setAll(axes.weight, axes.width);
 
-  // ---- cursor spotlight: weight/width swell toward the pointer ----
-  let px = -9999;
-  let py = -9999;
-  let active = false;
-  let started = false;
-  addEventListener(
+  let interactive = false;
+  const intro = gsap.timeline({ delay: 0.12 });
+  intro.from(lines, {
+    yPercent: 118,
+    rotate: 3,
+    opacity: 0,
+    duration: 1.05,
+    ease: 'power4.out',
+    stagger: 0.075,
+  });
+  intro.to(
+    axes,
+    {
+      weight: REST.weight,
+      width: REST.width,
+      duration: 1.05,
+      ease: 'power3.inOut',
+      onUpdate: () => setAll(axes.weight, axes.width),
+    },
+    '-=0.82'
+  );
+  if (sub) {
+    intro.from(sub, { yPercent: 80, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.58');
+  }
+  intro.eventCallback('onComplete', () => {
+    interactive = true;
+    measure();
+  });
+
+  let bounds = [];
+  let measureRaf = 0;
+  function measure() {
+    measureRaf = 0;
+    bounds = chars.map((char) => {
+      const rect = char.getBoundingClientRect();
+      return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    });
+  }
+  const queueMeasure = () => {
+    if (!measureRaf) measureRaf = requestAnimationFrame(measure);
+  };
+
+  let pointerX = -9999;
+  let pointerY = -9999;
+  let pointerRaf = 0;
+  const radius = 280;
+
+  function paintPointer() {
+    pointerRaf = 0;
+    for (let index = 0; index < chars.length; index++) {
+      const point = bounds[index];
+      if (!point) continue;
+      const distance = Math.hypot(point.x - pointerX, point.y - pointerY);
+      const proximity = Math.max(0, 1 - distance / radius);
+      const eased = proximity * proximity;
+      setAxes(chars[index], 390 + 540 * eased, 112 - 42 * eased);
+    }
+  }
+
+  hero.addEventListener(
     'pointermove',
-    (e) => {
-      px = e.clientX;
-      py = e.clientY;
-      active = true;
+    (event) => {
+      if (!interactive) return;
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (!pointerRaf) pointerRaf = requestAnimationFrame(paintPointer);
     },
     { passive: true }
   );
-  // hand control to the cursor after the entrance settles
-  tl.eventCallback('onComplete', () => (started = true));
+  hero.addEventListener('pointerleave', () => {
+    if (!interactive) return;
+    setAll(REST.weight, REST.width);
+    queueMeasure();
+  });
 
-  const R = 260;
-  let frame = 0;
-  function loop() {
-    requestAnimationFrame(loop);
-    if (!started || !active) return;
-    if ((frame++ & 1) === 0) return;
-    for (const s of chars) {
-      const r = s.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > innerHeight) continue;
-      const cx = r.left + r.width / 2;
-      const cy = r.top + r.height / 2;
-      const d = Math.hypot(cx - px, cy - py);
-      const k = Math.max(0, 1 - d / R);
-      const e = k * k;
-      const w = Math.round(360 + 560 * e); // 360..920
-      const wd = Math.round(120 - 46 * e); // 120..74
-      s.style.fontVariationSettings = `'wght' ${w},'wdth' ${wd},'opsz' 144`;
-    }
-  }
-  loop();
+  addEventListener('resize', queueMeasure, { passive: true });
+  document.fonts?.ready.then(queueMeasure);
 }

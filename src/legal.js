@@ -5,9 +5,10 @@
 import './styles/legal.css';
 
 // self-hosted variable fonts (same as the home page)
-import '@fontsource-variable/roboto-flex/full.css';
+import '@fontsource-variable/roboto-flex/wdth.css';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/space-grotesk';
 
-const year = document.querySelector('[data-year]');
-if (year) year.textContent = String(new Date().getFullYear());
+document.querySelectorAll('[data-year]').forEach((year) => {
+  year.textContent = String(new Date().getFullYear());
+});

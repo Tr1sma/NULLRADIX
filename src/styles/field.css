@@ -1,52 +1,90 @@
-/* ---- coordinate field: the plotted view of the work list ---- */
+/* Coordinate field — primary project instrument */
 .field {
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  max-height: 70svh;
-  margin-bottom: var(--sp-16);
-  border: var(--hairline);
-  border-radius: var(--radius);
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
   overflow: hidden;
-  /* faint instrument panel - keeps the field reading as its own surface */
-  background: radial-gradient(
-    120% 120% at 50% 50%,
-    color-mix(in oklab, var(--c-surface) 50%, transparent),
-    transparent 72%
-  );
+  border-inline: var(--hairline);
+  background:
+    radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.035), transparent 55%),
+    linear-gradient(rgb(255 255 255 / 0.012), rgb(255 255 255 / 0.012)),
+    var(--c-surface);
+  contain: layout paint style;
 }
+
+.field::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.24;
+  background-image:
+    linear-gradient(to right, var(--c-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--c-line) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle at center, #000, transparent 84%);
+  mask-image: radial-gradient(circle at center, #000, transparent 84%);
+}
+
 .field__canvas {
   position: absolute;
   inset: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
-  display: block;
+  touch-action: pan-y;
 }
 
 .field__hud {
   position: absolute;
-  left: var(--sp-4);
-  bottom: var(--sp-3);
+  right: var(--sp-4);
+  bottom: var(--sp-4);
+  z-index: 2;
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 2px;
   pointer-events: none;
   font-family: var(--ff-label);
-  font-size: var(--fs-100);
+  font-size: 0.64rem;
 }
+
 .field__hud-coord {
   color: var(--c-mid);
-  letter-spacing: 0.08em;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
 }
+
 .field__hud-label {
   color: var(--c-far);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
-@media (max-width: 640px) {
-  .field {
-    aspect-ratio: 4 / 5;
-  }
+.field__corner {
+  position: absolute;
+  z-index: 2;
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+}
+
+.field__corner::before,
+.field__corner::after {
+  content: '';
+  position: absolute;
+  background: var(--c-mid);
+}
+.field__corner::before { width: 15px; height: 1px; }
+.field__corner::after { width: 1px; height: 15px; }
+.field__corner--tl { top: 0; left: 0; }
+.field__corner--tr { top: 0; right: 0; transform: rotate(90deg); }
+.field__corner--br { right: 0; bottom: 0; transform: rotate(180deg); }
+.field__corner--bl { bottom: 0; left: 0; transform: rotate(270deg); }
+
+@media (max-width: 700px) {
+  .field::before { background-size: 3rem 3rem; }
+  .field__hud { right: var(--sp-3); bottom: var(--sp-3); }
 }

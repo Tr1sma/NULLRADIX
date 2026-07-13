@@ -6,7 +6,7 @@
     <link rel="apple-touch-icon" href="/nr-avatar.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#0c0c0d" />
+    <meta name="theme-color" content="#050505" />
 
     <title>Datenschutzerklärung - NULLRADIX</title>
     <meta name="description" content="Datenschutzerklärung - NULLRADIX" />
@@ -18,13 +18,17 @@
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- ambient background -->
-    <div class="ghost" aria-hidden="true" data-ghost>NR</div>
-    <div class="grain" aria-hidden="true"></div>
+    <div class="ambient" aria-hidden="true">
+      <div class="ambient__grid"></div>
+      <div class="grain"></div>
+    </div>
 
     <header class="site-header">
       <div class="header-bar">
-        <a class="brand" href="/" aria-label="NULLRADIX - Startseite">NULLRADIX</a>
+        <a class="brand" href="/" aria-label="NULLRADIX - Startseite">
+          <span class="brand__mark" aria-hidden="true">NR</span>
+          <span class="brand__name">NULLRADIX</span>
+        </a>
         <nav class="site-nav" aria-label="Primary">
           <a href="/#work">Work</a>
           <a href="/#contact">Contact</a>
@@ -141,12 +145,13 @@ E-Mail: <a href="mailto:tristan@nullradix.de">tristan@nullradix.de</a></address>
     </main>
 
     <footer class="site-footer">
-      <span>NULLRADIX</span>
+      <a class="footer-brand" href="/">NULLRADIX <span>®26</span></a>
+      <p>Independent developer<br />based in Germany</p>
       <nav class="footer-legal" aria-label="Rechtliches">
         <a href="/impressum.html">Impressum</a>
         <a href="/datenschutz.html">Datenschutz</a>
       </nav>
-      <span><span data-year>2026</span> - built with care</span>
+      <p class="footer-time">ORIGIN / <span data-year>2026</span><br />Built with care</p>
     </footer>
   </body>
 </html>

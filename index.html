@@ -6,15 +6,15 @@
     <link rel="apple-touch-icon" href="/nr-avatar.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#0c0c0d" />
+    <meta name="theme-color" content="#050505" />
 
-    <title>NULLRADIX - Developer</title>
+    <title>NULLRADIX — Systems &amp; Software Developer</title>
     <meta
       name="description"
-      content="NULLRADIX - developer building fast, durable web apps, tools, and the plumbing that makes them work."
+      content="NULLRADIX — developer building fast, durable web apps, tools, and the plumbing that makes them work."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="NULLRADIX - Developer" />
+    <meta property="og:title" content="NULLRADIX — Systems &amp; Software Developer" />
     <meta property="og:description" content="Developer building fast, durable products." />
     <meta property="og:image" content="/nr-avatar.png" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -22,106 +22,254 @@
     <script type="module" src="/src/main.js"></script>
   </head>
 
-  <body>
+  <body class="home">
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- ambient background -->
-    <div class="ghost" aria-hidden="true" data-ghost>NR</div>
-    <div class="grain" aria-hidden="true"></div>
+    <div class="ambient" aria-hidden="true">
+      <div class="ambient__grid"></div>
+      <div class="ambient__light" data-pointer-light></div>
+      <div class="grain"></div>
+    </div>
+
+    <div class="page-frame" aria-hidden="true">
+      <i class="page-frame__corner page-frame__corner--tl"></i>
+      <i class="page-frame__corner page-frame__corner--tr"></i>
+      <i class="page-frame__corner page-frame__corner--bl"></i>
+      <i class="page-frame__corner page-frame__corner--br"></i>
+    </div>
+
+    <aside class="scroll-rail" aria-hidden="true">
+      <span class="scroll-rail__current" data-progress-label>00</span>
+      <span class="scroll-rail__track"><i data-scroll-progress></i></span>
+      <span class="scroll-rail__total">04</span>
+    </aside>
 
     <header class="site-header" data-header>
       <div class="header-bar">
-        <a class="brand" href="#top" aria-label="NULLRADIX - home">NULLRADIX</a>
-        <nav class="site-nav" aria-label="Primary">
-          <a href="#about">About</a>
-          <a href="#work">Work</a>
-          <a href="#skills">Skills</a>
-          <a href="#contact">Contact</a>
+        <a class="brand" href="#top" aria-label="NULLRADIX — home">
+          <span class="brand__mark" aria-hidden="true">NR</span>
+          <span class="brand__name">NULLRADIX</span>
+        </a>
+
+        <p class="header-readout" aria-hidden="true" data-header-section>00 — ORIGIN</p>
+
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="#about"><span aria-hidden="true">01</span><b>About</b></a>
+          <a href="#work"><span aria-hidden="true">02</span><b>Work</b></a>
+          <a href="#skills"><span aria-hidden="true">03</span><b>Skills</b></a>
+          <a href="#contact"><span aria-hidden="true">04</span><b>Contact</b></a>
         </nav>
       </div>
+      <span class="header-progress" aria-hidden="true"><i data-scroll-progress></i></span>
     </header>
 
-    <main id="main">
-      <section id="top" class="hero" aria-labelledby="hero-title">
-        <div class="hero__inner">
-          <p class="hero__eyebrow label" data-reveal>
-            <span class="pulse" aria-hidden="true"></span>
-            <span data-profile-status>Available for work</span>
-          </p>
+    <main id="main" tabindex="-1">
+      <section id="top" class="hero scene" aria-labelledby="hero-title" data-section-index="00">
+        <div class="hero__axis hero__axis--x" aria-hidden="true"></div>
+        <div class="hero__axis hero__axis--y" aria-hidden="true"></div>
+        <div class="hero__ghost" aria-hidden="true">NR</div>
 
-          <h1 class="hero__title" id="hero-title">
-            <span class="line"><span class="line__inner" data-letters>I build software</span></span>
-            <span class="line"><span class="line__inner" data-letters>that feels obvious.</span></span>
-          </h1>
+        <div class="hero__reticle" aria-hidden="true" data-reticle>
+          <span class="hero__ring hero__ring--outer"></span>
+          <span class="hero__ring hero__ring--middle"></span>
+          <span class="hero__ring hero__ring--inner"></span>
+          <span class="hero__sweep"></span>
+          <span class="hero__origin"></span>
+          <small>ORIGIN / 0,0</small>
+        </div>
 
-          <p class="hero__sub">
-            <span class="line__inner" data-hero-sub>
-              Developer focused on fast, durable products - web apps, tools, and the
-              unglamorous plumbing that makes them work.
-            </span>
-          </p>
-
-          <div class="hero__cta">
-            <a class="btn btn--primary" href="#work">See the work</a>
-            <a class="btn" href="#contact">Get in touch</a>
+        <div class="hero__inner shell">
+          <div class="hero__topline" data-reveal>
+            <p class="hero__eyebrow label">
+              <span class="pulse" aria-hidden="true"></span>
+              <span data-profile-status>Available for work</span>
+            </p>
+            <p class="hero__role label">Systems &amp; Software Developer</p>
           </div>
 
-          <p class="scroll-cue" aria-hidden="true">Scroll ↓</p>
+          <h1
+            class="hero__title"
+            id="hero-title"
+            aria-label="I build software that feels obvious."
+          >
+            <span class="line" aria-hidden="true"><span class="line__inner" data-letters>I build</span></span>
+            <span class="line line--outline" aria-hidden="true"><span class="line__inner" data-letters>software that</span></span>
+            <span class="line line--offset" aria-hidden="true"><span class="line__inner" data-letters>feels obvious.</span></span>
+          </h1>
+
+          <div class="hero__lower">
+            <p class="hero__sub">
+              <span class="line__inner" data-hero-sub>
+                Developer focused on fast, durable products — web apps, tools, and the
+                unglamorous plumbing that makes them work.
+              </span>
+            </p>
+
+            <div class="hero__actions">
+              <a class="btn btn--primary" href="#work" data-magnetic>
+                <span>Explore the work</span><i aria-hidden="true">↘</i>
+              </a>
+              <a class="btn" href="#contact" data-magnetic>
+                <span>Start a project</span><i aria-hidden="true">↗</i>
+              </a>
+            </div>
+
+            <dl class="hero__telemetry" aria-label="Site telemetry">
+              <div><dt>System</dt><dd>Online</dd></div>
+              <div><dt>Local time</dt><dd><time data-system-time>--:--:--</time></dd></div>
+              <div><dt>Mode</dt><dd>Independent</dd></div>
+            </dl>
+          </div>
+
+          <a class="scroll-cue" href="#about" aria-label="Scroll to about">
+            <span>Scroll to enter</span><i aria-hidden="true"></i>
+          </a>
         </div>
       </section>
 
-      <section id="about" class="section shell" aria-labelledby="about-h">
-        <div class="section__head" data-reveal>
-          <p class="label">About</p>
-          <h2 id="about-h" class="section__title">How I work</h2>
+      <div class="transmission" aria-hidden="true">
+        <div class="transmission__track">
+          <span>SYSTEMS</span><i>×</i><span>SOFTWARE</span><i>×</i><span>INTERFACES</span><i>×</i><span>INFRASTRUCTURE</span><i>×</i><span>ORIGIN 00</span><i>×</i>
+          <span>SYSTEMS</span><i>×</i><span>SOFTWARE</span><i>×</i><span>INTERFACES</span><i>×</i><span>INFRASTRUCTURE</span><i>×</i><span>ORIGIN 00</span><i>×</i>
         </div>
-        <div class="about" data-reveal>
-          <p class="about__lead" data-about-lead></p>
+      </div>
+
+      <section id="about" class="section section--about scene shell" aria-labelledby="about-h" data-section-index="01">
+        <header class="section__head section__head--editorial">
+          <div class="section__meta" data-reveal>
+            <p class="section__index">01 / 04</p>
+            <p class="label">Approach — How I work</p>
+          </div>
+          <h2 id="about-h" class="section__title section__title--xl" data-reveal>
+            Complex underneath.<br /><span>Obvious on the surface.</span>
+          </h2>
+          <span class="section__rule" aria-hidden="true"></span>
+        </header>
+
+        <div class="about">
+          <div class="about__manifesto" data-reveal>
+            <p class="about__lead" data-about-lead></p>
+            <p class="about__note label">Make the hard parts disappear.</p>
+          </div>
+
+          <dl class="metrics" data-metrics aria-label="Selected facts"></dl>
           <dl class="about__principles" data-about-principles></dl>
         </div>
       </section>
 
-      <section id="work" class="section shell" aria-labelledby="work-h">
-        <div class="section__head" data-reveal>
-          <p class="label">Selected work</p>
-          <h2 id="work-h" class="section__title">Things I've built</h2>
+      <section id="work" class="section section--work scene" aria-labelledby="work-h" data-section-index="02">
+        <header class="section__head section__head--work shell">
+          <div class="section__meta" data-reveal>
+            <p class="section__index">02 / 04</p>
+            <p class="label">Selected work — Project atlas</p>
+          </div>
+          <h2 id="work-h" class="section__title section__title--xl" data-reveal>
+            Work, plotted<br /><span>from the origin.</span>
+          </h2>
+          <span class="section__rule" aria-hidden="true"></span>
+        </header>
+
+        <div class="work-stage shell">
+          <div class="work-visual">
+            <div class="work-visual__sticky">
+              <div class="instrument-bar" aria-hidden="true">
+                <span>PROJECT FIELD / LIVE</span>
+                <span>MOVE TO INTERROGATE</span>
+                <span>02—WORK</span>
+              </div>
+              <div class="field" data-field aria-hidden="true" data-reveal>
+                <canvas class="field__canvas" data-field-canvas></canvas>
+                <div class="field__hud" data-field-hud></div>
+                <span class="field__corner field__corner--tl"></span>
+                <span class="field__corner field__corner--tr"></span>
+                <span class="field__corner field__corner--bl"></span>
+                <span class="field__corner field__corner--br"></span>
+              </div>
+              <div class="instrument-footer" aria-hidden="true">
+                <span>FRONTEND ← X → BACKEND</span>
+                <span>6 SIGNALS</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="work-list-wrap">
+            <span class="work-marker" data-work-marker aria-hidden="true"></span>
+            <ol class="work-list" data-projects aria-label="Selected projects"><!-- JS --></ol>
+          </div>
         </div>
-        <div class="field" data-field aria-hidden="true" data-reveal>
-          <canvas class="field__canvas" data-field-canvas></canvas>
-          <div class="field__hud" data-field-hud></div>
-        </div>
-        <ol class="work-list" data-projects><!-- JS --></ol>
       </section>
 
-      <section id="skills" class="section shell" aria-labelledby="skills-h">
-        <div class="section__head" data-reveal>
-          <p class="label">What I work with</p>
-          <h2 id="skills-h" class="section__title">Skills &amp; experience</h2>
+      <section id="skills" class="section section--skills scene shell" aria-labelledby="skills-h" data-section-index="03">
+        <header class="section__head section__head--editorial">
+          <div class="section__meta" data-reveal>
+            <p class="section__index">03 / 04</p>
+            <p class="label">Capabilities — Experience</p>
+          </div>
+          <h2 id="skills-h" class="section__title section__title--xl" data-reveal>
+            Across the stack.<br /><span>Down to the metal.</span>
+          </h2>
+          <span class="section__rule" aria-hidden="true"></span>
+        </header>
+
+        <div class="capabilities">
+          <div class="capabilities__intro" data-reveal>
+            <p class="label">Tooling is a means, not the outcome.</p>
+            <p>I move between product surfaces and system internals — choosing the layer where the real problem lives.</p>
+          </div>
+          <div class="skills__grid" data-skills><!-- JS --></div>
         </div>
-        <div class="skills__grid" data-skills><!-- JS --></div>
-        <ol class="timeline" data-experience><!-- JS --></ol>
+
+        <div class="experience-head" data-reveal>
+          <p class="label">Trajectory / 2014—Now</p>
+          <p>From visual logic to production systems.</p>
+        </div>
+        <div class="timeline-wrap">
+          <span class="timeline__track" aria-hidden="true"><i data-timeline-dot></i></span>
+          <ol class="timeline" data-experience aria-label="Experience timeline"><!-- JS --></ol>
+        </div>
       </section>
 
-      <section id="contact" class="section shell" aria-labelledby="contact-h">
-        <div class="section__head" data-reveal>
-          <p class="label">Contact</p>
-          <h2 id="contact-h" class="section__title">Let's make something good</h2>
-        </div>
-        <div class="contact__body" data-reveal>
-          <a class="contact__email" href="mailto:tristan@nullradix.de" data-profile-email data-text="tristan@nullradix.de">tristan@nullradix.de</a>
-          <button class="btn" type="button" data-copy-email>Copy email</button>
-          <ul class="socials" data-socials><!-- JS --></ul>
+      <section id="contact" class="section section--contact scene" aria-labelledby="contact-h" data-section-index="04">
+        <div class="contact shell">
+          <header class="contact__head">
+            <div class="section__meta" data-reveal>
+              <p class="section__index">04 / 04</p>
+              <p class="label">Contact — Open channel</p>
+            </div>
+            <h2 id="contact-h" class="contact__title" data-reveal>
+              Have a system<br />worth building?
+            </h2>
+          </header>
+
+          <div class="contact__body" data-reveal>
+            <p class="contact__prompt label">Transmit a signal</p>
+            <a class="contact__email" href="mailto:tristan@nullradix.de" data-profile-email>
+              tristan@nullradix.de
+            </a>
+            <div class="contact__controls">
+              <button class="btn btn--contact" type="button" data-copy-email>
+                <span>Copy address</span><i aria-hidden="true">+</i>
+              </button>
+              <p class="copy-status" role="status" aria-live="polite" data-copy-status>Channel ready.</p>
+            </div>
+          </div>
+
+          <div class="contact__footer">
+            <p class="label">Elsewhere</p>
+            <ul class="socials" data-socials><!-- JS --></ul>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <span>NULLRADIX</span>
-      <nav class="footer-legal" aria-label="Rechtliches">
+      <a class="footer-brand" href="#top">NULLRADIX <span>®26</span></a>
+      <p>Independent developer<br />based in Germany</p>
+      <nav class="footer-legal" aria-label="Legal">
         <a href="/impressum.html">Impressum</a>
         <a href="/datenschutz.html">Datenschutz</a>
       </nav>
-      <span><span data-year>2026</span> - built with care</span>
+      <p class="footer-time">ORIGIN / <span data-year>2026</span><br />Built with care</p>
     </footer>
 
     <div
@@ -131,24 +279,42 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="panel-title"
+      aria-describedby="panel-description"
     >
       <div class="panel__backdrop" data-panel-close></div>
-      <article class="panel__card" tabindex="-1" data-panel-card>
-        <button class="panel__close" type="button" aria-label="Close" data-panel-close>×</button>
-        <p class="panel__index" data-panel-index></p>
-        <h3 class="panel__title" id="panel-title" data-panel-title></h3>
-        <p class="panel__meta" data-panel-meta></p>
-        <p class="panel__blurb" data-panel-blurb></p>
-        <ul class="tags" data-panel-tech></ul>
-        <div class="panel__links" data-panel-links></div>
+      <article class="panel__card" data-panel-card>
+        <header class="panel__topline">
+          <p class="label">Project dossier</p>
+          <button class="panel__close" type="button" aria-label="Close project dossier" data-panel-close>
+            <span>Close</span><i aria-hidden="true">×</i>
+          </button>
+        </header>
+
+        <div class="panel__body">
+          <p class="panel__index" data-panel-index></p>
+          <h3 class="panel__title" id="panel-title" data-panel-title></h3>
+          <div class="panel__readout">
+            <p data-panel-meta></p>
+            <p data-panel-coord></p>
+          </div>
+          <p class="panel__blurb" id="panel-description" data-panel-blurb></p>
+          <div class="panel__stack">
+            <p class="label">Technology</p>
+            <ul class="tags" data-panel-tech></ul>
+          </div>
+          <div class="panel__links" data-panel-links></div>
+        </div>
+
+        <p class="panel__watermark" aria-hidden="true" data-panel-watermark>00</p>
       </article>
     </div>
 
     <noscript>
       <style>
-        .ghost, .grain { display: none; }
+        .ambient__light, .hero__reticle, .scroll-rail { display: none; }
         [data-reveal], .line__inner { opacity: 1 !important; transform: none !important; }
       </style>
+      <p class="noscript-note">This portfolio needs JavaScript to render the project atlas and content index.</p>
     </noscript>
   </body>
 </html>

@@ -1,70 +1,70 @@
 # NULLRADIX
 
-A minimalist developer portfolio that behaves like a graphing instrument.
-Everything is plotted from the origin **(0,0)** - an interactive coordinate
-dot-field, a live `(x,y)` HUD, and projects placed on the plane.
+An immersive, strictly monochrome developer portfolio built as a living
+coordinate instrument. Projects are plotted from **ORIGIN / (0,0)** and the
+same visual language continues through the hero, section navigation, project
+atlas, capability matrix, experience rail and contact finale.
 
-Direction: **ORIGIN // (0,0)**. Stack: vanilla HTML/CSS/JS + Vite. No framework.
-
-## Edit your content
-
-All copy lives in **one file**: [`src/data/content.js`](src/data/content.js).
-Edit `profile`, `projects`, `skills`, `experience`, and `socials` - both the
-accessible list and the plotted view read from the same data.
-
-Each project's `coord: { x, y }` (each axis ~ -100..100) places it between the
-plane's four direction poles (see `axes` in the same file): `x` runs Frontend (-)
-↔ Backend (+), `y` runs Infrastructure (-) ↔ Product (+).
+Stack: semantic HTML, modern CSS, vanilla ES modules, Canvas, GSAP,
+ScrollTrigger, Lenis and Vite. No UI framework.
 
 ## Develop
 
 ```bash
 npm install
 npm run dev      # http://localhost:5173
-npm run build    # -> dist/
-npm run preview  # serve the built site
+npm run build    # production output in dist/
+npm run preview
 ```
 
-Requires Node 20.19+ / 22.12+ (see `.nvmrc`).
+Node 20.19+ or 22.12+ is required (see `.nvmrc`).
 
-## Design tokens
+## Content
 
-Palette and type live in [`src/styles/tokens.css`](src/styles/tokens.css). The
-canvas reads its colors from these CSS variables, so changing a token updates
-both the UI and the field. Single accent: `--c-origin` (#36F1CD).
+Portfolio content lives in [`src/data/content.js`](src/data/content.js):
 
-## How it works
+- profile and availability
+- about copy, principles and proof points
+- projects, links and field coordinates
+- skills and experience
+- social profiles
 
-- `src/field/` - the canvas instrument: a jittered lattice (`particles.js`)
-  driven by a spatial hash (`grid.js`) so cursor proximity is `O(neighbors)`.
-  `field.js` runs the loop; `hud.js` is the live readout; `crosshair.js` pins
-  the origin to the wordmark.
-- Three render modes (`modules/env.js`): **animated** (desktop), **low-motion**
-  (touch/small - calm static field, list-only nav), **static**
-  (`prefers-reduced-motion` / Save-Data - one frame, no loop).
-- The project **list** is the canonical, keyboard-accessible content; the
-  plotted nodes are pointer-only enhancement that cross-highlight the list.
+The project list is the canonical accessible representation. The Canvas field
+reads the same project data and acts as a pointer-enhanced overview.
 
-## Accessibility
+Each `coord: { x, y }` uses an approximate `-100..100` range. The x-axis runs
+Frontend → Backend; the y-axis runs Infrastructure → Product.
 
-WCAG-minded: skip link, semantic landmarks, visible focus, `prefers-reduced-motion`
-respected, the field is `aria-hidden`, and the list is fully usable without the
-scatter. Body text uses `--c-muted` (AA on the dark ground).
+## Architecture
 
-## Smooth scroll
+- `src/modules/` — data rendering, navigation, scroll orchestration, kinetic
+  type, global instrument feedback and the project dossier
+- `src/field/` — spatially hashed Canvas lattice, axes, HUD and project nodes
+- `src/styles/` — tokens, base rules, page layout, components, field and a
+  lightweight standalone legal-page entry
+- `index.html` — semantic scene structure and progressive-enhancement hooks
 
-Desktop uses [Lenis](https://github.com/darkroomengineering/lenis) (the only
-runtime dependency besides fonts), disabled on touch / reduced-motion. To drop
-the dependency entirely, remove `initScroll()` from `src/main.js` - native
-`scroll-behavior: smooth` is already set in CSS.
+Roboto Flex is loaded with only the weight/width axis build used by the design;
+Inter and Space Grotesk provide body text and telemetry. Fonts are self-hosted.
+
+## Accessibility and performance
+
+- semantic landmarks, headings and list content
+- skip link, visible focus states and 44px primary touch targets
+- keyboard-accessible project list and focus-trapped dossier with `inert`
+  background and focus restoration
+- live copy feedback and meaningful external-link labels
+- complete `prefers-reduced-motion` path: immediate navigation, static field,
+  no scrambles, parallax, marquee or spatial dialog transitions
+- touch/Save-Data capability modes and Canvas DPR cap
+- Canvas animation pauses offscreen and when idle
+- event-driven hero typography with cached glyph geometry (no permanent rAF)
+- dedicated legal CSS bundle instead of the full portfolio scene styles
 
 ## Deploy
 
-Static. Build outputs `dist/`.
+The output is static. `netlify.toml` is included. For a GitHub Pages project
+site, change Vite's `base` in `vite.config.js`; keep `/` for a custom domain.
 
-- **Netlify** - `netlify.toml` included (build `npm run build`, publish `dist`).
-- **Vercel** - auto-detects Vite.
-- **GitHub Pages** - for a *project* site set `base: '/NULLRADIX/'` in
-  `vite.config.js`; keep `'/'` for a user site or custom domain.
-
-Add a real `public/og-image.png` (1200×630) for social cards.
+Replace `public/nr-avatar.png` with a dedicated optimized 1200×630 Open Graph
+image if richer social previews are required.

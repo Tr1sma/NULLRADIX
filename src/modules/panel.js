@@ -1,143 +1,111 @@
 import { qs, qsa, el } from '../utils/dom.js';
 import { projects } from '../data/content.js';
+import { env } from './env.js';
 
-/** Shared project detail dialog. */
+/** Accessible full-height project dossier. */
 export function createPanel() {
   const root = qs('[data-panel]');
   const card = qs('[data-panel-card]', root);
+  const closeButton = qs('.panel__close', root);
+  const background = qsa('.site-header, main, .site-footer');
   let lastFocus = null;
   let closeTimer = 0;
-  let typers = [];
 
-  /** Cancel any in-flight typewriters, snapping their text to the final string. */
-  function clearTypers() {
-    for (const cancel of typers) cancel();
-    typers = [];
-  }
-
-  /**
-   * Reveal `text` in `node` character-by-character. Every glyph is laid out
-   * up-front (hidden), so the box keeps its final size - no reflow, no jump,
-   * and the open-from-click origin measures against the real height.
-   */
-  function typeText(node, text, delay, duration) {
-    text = text ?? '';
-    // opacity-only reveal (no movement) → safe to run even under reduced motion
-    if (!text) {
-      node.textContent = text;
-      return;
-    }
-    const spans = [...text].map((ch) => {
-      const s = el('span', {}, ch);
-      s.style.opacity = '0';
-      return s;
-    });
-    node.replaceChildren(...spans);
-
-    let start = 0;
-    let rafId = 0;
-    const timer = setTimeout(() => {
-      const step = (now) => {
-        start ||= now;
-        const p = Math.min((now - start) / duration, 1);
-        const shown = Math.round(p * spans.length);
-        for (let i = 0; i < shown; i++) spans[i].style.opacity = '1';
-        if (p < 1) rafId = requestAnimationFrame(step);
-      };
-      rafId = requestAnimationFrame(step);
-    }, delay);
-
-    typers.push(() => {
-      clearTimeout(timer);
-      cancelAnimationFrame(rafId);
-      node.textContent = text;
+  function setBackgroundInert(value) {
+    background.forEach((node) => {
+      node.inert = value;
     });
   }
 
-  /** Point the card's transform-origin at the clicked element so it grows out of it. */
-  function setOrigin(source) {
-    if (!source) {
-      card.style.removeProperty('--ox');
-      card.style.removeProperty('--oy');
-      return;
-    }
-    // measure the card at its resting (untransformed) box
-    card.style.transform = 'none';
-    const c = card.getBoundingClientRect();
-    card.style.transform = '';
-    const s = source.getBoundingClientRect();
-    card.style.setProperty('--ox', `${s.left + s.width / 2 - c.left}px`);
-    card.style.setProperty('--oy', `${s.top + s.height / 2 - c.top}px`);
-  }
-
-  function open(project, index, source) {
+  function open(project, index) {
     clearTimeout(closeTimer);
-    clearTypers();
     lastFocus = document.activeElement;
 
-    const num = String(index || projects.indexOf(project) + 1).padStart(2, '0');
+    const number = String(index || projects.indexOf(project) + 1).padStart(2, '0');
     const total = String(projects.length).padStart(2, '0');
-    const meta = [project.year, project.status].filter(Boolean).join(' · ');
-    // type the text fields out in a quick cascade as the card lands
-    typeText(qs('[data-panel-index]', root), `${num} / ${total}`, 60, 200);
-    typeText(qs('[data-panel-title]', root), project.name, 140, 320);
-    typeText(qs('[data-panel-meta]', root), meta, 300, 220);
-    typeText(qs('[data-panel-blurb]', root), project.blurb, 360, 520);
+    const status = project.status ? project.status.toUpperCase() : 'ARCHIVE';
+    const x = signed(project.coord?.x);
+    const y = signed(project.coord?.y);
 
+    qs('[data-panel-index]', root).textContent = `${number} / ${total}`;
+    qs('[data-panel-watermark]', root).textContent = number;
+    qs('[data-panel-title]', root).textContent = project.name;
+    qs('[data-panel-meta]', root).textContent = `${project.year} / ${status}`;
+    qs('[data-panel-coord]', root).textContent = `X ${x} / Y ${y}`;
+    qs('[data-panel-blurb]', root).textContent = project.blurb;
     qs('[data-panel-tech]', root).replaceChildren(
-      ...project.tech.map((t) => el('li', { class: 'tag' }, t))
+      ...project.tech.map((technology) => el('li', { class: 'tag' }, technology))
     );
     qs('[data-panel-links]', root).replaceChildren(
-      ...Object.entries(project.links || {}).map(([k, href]) =>
-        el('a', { class: 'btn', href, target: '_blank', rel: 'noopener' }, labelFor(k))
+      ...Object.entries(project.links || {}).map(([key, href]) =>
+        el(
+          'a',
+          { class: 'btn', href, target: '_blank', rel: 'noopener' },
+          [el('span', {}, labelFor(key)), el('i', { 'aria-hidden': 'true' }, '↗')]
+        )
       )
     );
 
     root.hidden = false;
-    document.body.style.overflow = 'hidden';
-    setOrigin(source);
-    void root.offsetWidth; // commit the closed state, then transition into the open one
-    root.classList.add('is-open');
-    card.focus({ preventScroll: true });
+    setBackgroundInert(true);
+    document.body.classList.add('panel-open');
+    requestAnimationFrame(() => {
+      root.classList.add('is-open');
+      closeButton?.focus({ preventScroll: true });
+    });
     document.addEventListener('keydown', onKey);
   }
 
   function close() {
-    if (root.hidden || !root.classList.contains('is-open')) return;
-    clearTypers();
+    if (!root || root.hidden || !root.classList.contains('is-open')) return;
     root.classList.remove('is-open');
-    document.body.style.overflow = '';
+    document.body.classList.remove('panel-open');
     document.removeEventListener('keydown', onKey);
-    lastFocus?.focus?.();
-    closeTimer = setTimeout(() => {
+
+    const delay = env.reducedMotion ? 0 : 520;
+    closeTimer = window.setTimeout(() => {
       root.hidden = true;
-    }, 420); // hold for the close transition (matches --dur) before removing from view
+      setBackgroundInert(false);
+      lastFocus?.focus?.({ preventScroll: true });
+    }, delay);
   }
 
-  function onKey(e) {
-    if (e.key === 'Escape') return close();
-    if (e.key === 'Tab') {
-      const f = qsa('a, button, [tabindex]:not([tabindex="-1"])', root).filter(
-        (n) => !n.hasAttribute('disabled') && n.offsetParent !== null
-      );
-      if (!f.length) return;
-      const first = f[0];
-      const last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
+  function onKey(event) {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      close();
+      return;
+    }
+    if (event.key !== 'Tab') return;
+
+    const focusable = qsa('a, button, [tabindex]:not([tabindex="-1"])', card).filter(
+      (node) => !node.hasAttribute('disabled') && node.offsetParent !== null
+    );
+    if (!focusable.length) {
+      event.preventDefault();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
     }
   }
 
-  qsa('[data-panel-close]', root).forEach((b) => b.addEventListener('click', close));
+  qsa('[data-panel-close]', root).forEach((control) => control.addEventListener('click', close));
 
   return { open, close };
 }
 
+function signed(value = 0) {
+  const number = Math.round(value);
+  return `${number < 0 ? '−' : '+'}${String(Math.abs(number)).padStart(3, '0')}`;
+}
+
 function labelFor(key) {
-  return { live: 'Live ↗', repo: 'Repository ↗', docs: 'Docs ↗' }[key] || key + ' ↗';
+  return { live: 'View live', repo: 'View repository', docs: 'Read docs' }[key] || key;
 }
