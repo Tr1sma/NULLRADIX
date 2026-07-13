@@ -1,0 +1,114 @@
+/* ---- viewport instrument frame: crosshair, edge rulers, live readouts ----
+   Purely decorative (aria-hidden). Fine pointers + wide screens only; the
+   crosshair additionally requires motion to be allowed. frame.js drives the
+   text + crosshair transforms. */
+
+.frame {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-frame);
+  pointer-events: none;
+  font-family: var(--ff-label);
+  font-size: var(--fs-100);
+  opacity: 0;
+  transition: opacity 1.2s var(--ease);
+}
+.frame.is-on {
+  opacity: 1;
+}
+
+/* page-wide cursor crosshair (two hairlines + a coordinate chip) */
+.frame__cross {
+  position: absolute;
+  background: color-mix(in oklab, var(--c-near) 8%, transparent);
+  will-change: transform;
+}
+.frame__cross--x {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+}
+.frame__cross--y {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+}
+.frame__chip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 2px 0 0 10px;
+  color: var(--c-far);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .frame__cross,
+  .frame__chip {
+    display: none;
+  }
+}
+
+/* corner brackets */
+.frame__corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  opacity: 0.5;
+}
+.frame__corner--tl { top: 10px; left: 10px; border-top: 1px solid var(--c-tick); border-left: 1px solid var(--c-tick); }
+.frame__corner--tr { top: 10px; right: 10px; border-top: 1px solid var(--c-tick); border-right: 1px solid var(--c-tick); }
+.frame__corner--bl { bottom: 10px; left: 10px; border-bottom: 1px solid var(--c-tick); border-left: 1px solid var(--c-tick); }
+.frame__corner--br { bottom: 10px; right: 10px; border-bottom: 1px solid var(--c-tick); border-right: 1px solid var(--c-tick); }
+
+/* fine tick rulers along the viewport edges */
+.frame__ruler {
+  position: absolute;
+  top: 15vh;
+  bottom: 15vh;
+  width: 8px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--c-tick) 0 1px,
+    transparent 1px 26px
+  );
+  opacity: 0.55;
+}
+.frame__ruler--l { left: 10px; }
+.frame__ruler--r { right: 10px; }
+
+/* live readouts, bottom corners */
+.frame__readout {
+  position: absolute;
+  bottom: 14px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  color: var(--c-far);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.66rem;
+}
+.frame__readout--pos { left: 28px; }
+.frame__readout--sector { right: 28px; }
+.frame__readout [data-read-index],
+.frame__readout [data-read-sector] {
+  color: var(--c-mid);
+}
+.frame__sep {
+  color: var(--c-far);
+  opacity: 0.6;
+}
+
+/* touch devices / narrow screens: the frame would fight the content for room */
+@media (pointer: coarse), (max-width: 900px) {
+  .frame {
+    display: none;
+  }
+}

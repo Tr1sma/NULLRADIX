@@ -43,6 +43,10 @@ button {
   cursor: pointer;
   background: none;
   border: none;
+  /* UA stylesheets reset these on form controls, breaking inheritance
+     (e.g. the uppercase work-item titles are <button> triggers) */
+  text-transform: inherit;
+  letter-spacing: inherit;
 }
 
 ul,

@@ -9,6 +9,7 @@
   --c-near: #fafafb; /* primary text */
   --c-muted: color-mix(in oklab, var(--c-near) 60%, var(--c-void)); /* AA body secondary */
   --c-origin: #fafafb; /* field accent (ORIGIN / active node) - monochrome for now; swap to a hue to re-introduce the README accent */
+  --c-tick: color-mix(in oklab, var(--c-near) 14%, transparent); /* instrument ticks / rules */
 
   /* ---- type ---- */
   --ff-display: 'Roboto Flex Variable', system-ui, sans-serif;
@@ -16,11 +17,12 @@
   --ff-label: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
 
   /* fluid scale */
-  --fs-100: clamp(0.72rem, 0.68rem + 0.2vw, 0.8rem); /* labels */
+  --fs-100: clamp(0.72rem, 0.68rem + 0.2vw, 0.8rem); /* labels / HUD */
   --fs-200: clamp(0.95rem, 0.9rem + 0.25vw, 1.06rem); /* body */
   --fs-300: clamp(1.1rem, 0.95rem + 0.7vw, 1.5rem);
-  --fs-400: clamp(1.6rem, 1.1rem + 2vw, 2.6rem); /* h2 */
-  --fs-600: clamp(1.9rem, 1.1rem + 3.4vw, 4rem); /* big project numbers / contact */
+  --fs-400: clamp(2rem, 1.1rem + 3.8vw, 4.6rem); /* sector titles */
+  --fs-500: clamp(1.7rem, 1rem + 3vw, 3.4rem); /* work-item titles */
+  --fs-600: clamp(1.9rem, 1rem + 4.2vw, 5rem); /* big project numbers / contact */
   --fs-hero: clamp(2.2rem, 0.4rem + 10vw, 9rem); /* hero headline */
 
   /* spacing (8px) */
@@ -40,12 +42,14 @@
   --measure: 46ch;
   --gutter: clamp(1.25rem, 6vw, 4.5rem);
   --radius: 6px;
+  --radius-sharp: 2px; /* instrument edges: buttons, tags, cards */
   --hairline: 1px solid var(--c-line);
 
   /* z */
   --z-ghost: 0;
   --z-grain: 1;
   --z-base: 2;
+  --z-frame: 40; /* viewport instrument frame (HUD) */
   --z-header: 50;
   --z-panel: 90;
   --z-skip: 100;

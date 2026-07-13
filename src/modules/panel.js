@@ -1,5 +1,6 @@
 import { qs, qsa, el } from '../utils/dom.js';
 import { projects } from '../data/content.js';
+import { fmtCoord } from './projects.js';
 
 /** Shared project detail dialog. */
 export function createPanel() {
@@ -77,7 +78,9 @@ export function createPanel() {
 
     const num = String(index || projects.indexOf(project) + 1).padStart(2, '0');
     const total = String(projects.length).padStart(2, '0');
-    const meta = [project.year, project.status].filter(Boolean).join(' · ');
+    const meta = [project.year, project.status, fmtCoord(project.coord)]
+      .filter(Boolean)
+      .join(' · ');
     // type the text fields out in a quick cascade as the card lands
     typeText(qs('[data-panel-index]', root), `${num} / ${total}`, 60, 200);
     typeText(qs('[data-panel-title]', root), project.name, 140, 320);

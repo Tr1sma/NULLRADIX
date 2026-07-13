@@ -1,18 +1,20 @@
-/* ---- coordinate field: the plotted view of the work list ---- */
+/* ---- coordinate field: the plotted view of the work list ----
+   Full-bleed instrument strip: hairlines above/below, no card chrome, so the
+   plane reads as a cut through the page rather than a boxed widget. */
 .field {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  max-height: 70svh;
-  margin-bottom: var(--sp-16);
-  border: var(--hairline);
-  border-radius: var(--radius);
+  aspect-ratio: 16 / 9;
+  max-height: 78svh;
+  min-height: 22rem;
+  margin-bottom: clamp(var(--sp-12), 8vh, var(--sp-24));
+  border-block: var(--hairline);
   overflow: hidden;
   /* faint instrument panel - keeps the field reading as its own surface */
   background: radial-gradient(
-    120% 120% at 50% 50%,
-    color-mix(in oklab, var(--c-surface) 50%, transparent),
-    transparent 72%
+    90% 120% at 50% 50%,
+    color-mix(in oklab, var(--c-surface) 55%, transparent),
+    transparent 74%
   );
 }
 .field__canvas {
@@ -25,7 +27,7 @@
 
 .field__hud {
   position: absolute;
-  left: var(--sp-4);
+  left: max(var(--gutter), calc((100% - var(--container)) / 2));
   bottom: var(--sp-3);
   display: flex;
   flex-direction: column;
@@ -48,5 +50,9 @@
 @media (max-width: 640px) {
   .field {
     aspect-ratio: 4 / 5;
+    min-height: 0;
+  }
+  .field__hud {
+    left: var(--gutter);
   }
 }

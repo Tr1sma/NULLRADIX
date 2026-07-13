@@ -22,7 +22,7 @@ function smoothScrollTo(targetY, duration = 800) {
   requestAnimationFrame(step);
 }
 
-/** Smooth scroll + scroll-reveals + ghost parallax. */
+/** Smooth scroll + the page's scroll choreography (reveals, scrubs, parallax). */
 export async function initScroll() {
   const revealEls = [
     ...document.querySelectorAll('[data-reveal], .work-item, .timeline__item, .skill-group'),
@@ -60,6 +60,98 @@ export async function initScroll() {
           overwrite: true,
         }),
     });
+
+    // ---- sector titles rise out of their line masks ----
+    document.querySelectorAll('[data-title]').forEach((title) => {
+      const inners = title.querySelectorAll('.line__inner');
+      gsap.set(inners, { yPercent: 115 });
+      gsap.to(inners, {
+        yPercent: 0,
+        duration: 1.1,
+        ease: 'power4.out',
+        stagger: 0.09,
+        scrollTrigger: { trigger: title, start: 'top 88%', once: true },
+      });
+    });
+
+    // ---- sector rules draw in from the index toward the label ----
+    document.querySelectorAll('[data-sector-rule]').forEach((rule) => {
+      gsap.set(rule, { scaleX: 0 });
+      gsap.to(rule, {
+        scaleX: 1,
+        duration: 1.4,
+        ease: 'expo.out',
+        scrollTrigger: { trigger: rule, start: 'top 90%', once: true },
+      });
+    });
+
+    // ---- about lead brightens word by word as it scrolls through ----
+    const leadWords = document.querySelectorAll('.about__lead .w');
+    if (leadWords.length) {
+      gsap.fromTo(
+        leadWords,
+        { opacity: 0.16 },
+        {
+          opacity: 1,
+          ease: 'none',
+          stagger: 0.6,
+          scrollTrigger: {
+            trigger: '.about__lead',
+            start: 'top 80%',
+            end: 'bottom 45%',
+            scrub: true,
+          },
+        }
+      );
+    }
+
+    // ---- ruler dividers: ticks slide sideways with scroll (instrument feedback) ----
+    document.querySelectorAll('[data-ruler] .ruler__ticks').forEach((ticks, i) => {
+      gsap.fromTo(
+        ticks,
+        { x: 0 },
+        {
+          x: i % 2 ? 96 : -96, // one long-tick period; alternate direction per divider
+          ease: 'none',
+          scrollTrigger: {
+            trigger: ticks.parentElement,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.4,
+          },
+        }
+      );
+    });
+
+    // ---- hero drifts up and dims as the page takes over ----
+    const heroInner = document.querySelector('[data-hero-inner]');
+    if (heroInner) {
+      gsap.to(heroInner, {
+        yPercent: -10,
+        opacity: 0.25,
+        ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom 25%', scrub: true },
+      });
+    }
+
+    // ---- footer wordmark rises into place as the page ends ----
+    const mark = document.querySelector('[data-footer-mark]');
+    if (mark) {
+      gsap.fromTo(
+        mark,
+        { yPercent: 32 },
+        {
+          yPercent: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.site-footer',
+            start: 'top bottom',
+            end: 'bottom bottom',
+            scrub: 0.4,
+          },
+        }
+      );
+    }
 
     // ---- giant ghost wordmark drifts slower than the page ----
     // Skip on touch: scroll-scrubbing a position:fixed element jitters/bounces

@@ -12,13 +12,23 @@ export function renderSections() {
   if (status) status.textContent = profile.status;
 
   const aboutLead = qs('[data-about-lead]');
-  if (aboutLead) aboutLead.textContent = about.lead;
+  if (aboutLead) {
+    // one span per word so scroll.js can brighten the lead word by word
+    aboutLead.replaceChildren(
+      ...about.lead
+        .split(' ')
+        .flatMap((w, i) => (i ? [' ', el('span', { class: 'w' }, w)] : [el('span', { class: 'w' }, w)]))
+    );
+  }
 
   const aboutPrinciples = qs('[data-about-principles]');
   if (aboutPrinciples) {
     aboutPrinciples.replaceChildren(
-      ...about.principles.flatMap((p) => [
-        el('dt', { class: 'about__k' }, p.k),
+      ...about.principles.flatMap((p, i) => [
+        el('dt', { class: 'about__k' }, [
+          el('span', { class: 'about__k-index', 'aria-hidden': 'true' }, `P.${String(i + 1).padStart(2, '0')}`),
+          p.k,
+        ]),
         el('dd', { class: 'about__v' }, p.v),
       ])
     );
@@ -39,7 +49,7 @@ export function renderSections() {
           el(
             'ul',
             { class: 'skill-group__items' },
-            g.items.map((s) => el('li', { class: 'tag' }, s))
+            g.items.map((s) => el('li', {}, s))
           ),
         ])
       )
@@ -51,7 +61,7 @@ export function renderSections() {
     expRoot.replaceChildren(
       ...experience.map((e) =>
         el('li', { class: 'timeline__item' }, [
-          el('p', { class: 'timeline__range' }, `${e.from} - ${e.to}`),
+          el('p', { class: 'timeline__range' }, `${e.from} — ${e.to}`),
           el('p', { class: 'timeline__role' }, el('span', { class: 'timeline__role-name' }, e.role)),
           el('p', { class: 'timeline__org' }, e.org),
           el('p', { class: 'timeline__summary' }, e.summary),
@@ -71,7 +81,7 @@ export function renderSections() {
         el('li', {}, [
           el('a', { href: s.href, target: '_blank', rel: 'noopener' }, [
             `${s.label} `,
-            el('span', { style: 'color:var(--c-far)' }, s.handle),
+            el('span', { style: 'color:var(--c-mid)' }, s.handle),
           ]),
         ])
       )

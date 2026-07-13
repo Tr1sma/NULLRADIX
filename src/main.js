@@ -12,6 +12,7 @@ import { renderField } from "./field/field.js";
 import { initTypo } from "./modules/typo.js";
 import { initScroll } from "./modules/scroll.js";
 import { initNav } from "./modules/nav.js";
+import { initFrame } from "./modules/frame.js";
 
 function boot() {
   // disable the context menu across the entire page
@@ -30,6 +31,7 @@ function boot() {
   initTypo();
   initNav();
   initScroll();
+  initFrame();
 }
 
 if (document.readyState === "loading") {

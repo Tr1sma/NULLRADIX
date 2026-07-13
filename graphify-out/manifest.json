@@ -1,0 +1,152 @@
+{
+  ".claude/launch.json": {
+    "mtime": 1783936084.2682168,
+    "ast_hash": "7254b5b92c66e75644ba3967339de572",
+    "semantic_hash": ""
+  },
+  "deploy.ps1": {
+    "mtime": 1783342681.1971498,
+    "ast_hash": "e21e7eee5b74416224504633fb939b34",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1783342681.1971498,
+    "ast_hash": "0faf910d39b5c480bad0868856b77a8c",
+    "semantic_hash": ""
+  },
+  "src/data/content.js": {
+    "mtime": 1783935026.9701812,
+    "ast_hash": "d0ffd79e2b979b8d50be298c8967dadd",
+    "semantic_hash": ""
+  },
+  "src/field/crosshair.js": {
+    "mtime": 1783342681.2128422,
+    "ast_hash": "6384070dc3453a5fa18b3a8030be59ba",
+    "semantic_hash": ""
+  },
+  "src/field/field.js": {
+    "mtime": 1783935026.9701812,
+    "ast_hash": "bf3b6e45a08c72b6edf8be3387b9af3e",
+    "semantic_hash": ""
+  },
+  "src/field/grid.js": {
+    "mtime": 1783342681.2128422,
+    "ast_hash": "6acdd5b6842ae1ea4c9f8c7623234b1a",
+    "semantic_hash": ""
+  },
+  "src/field/hud.js": {
+    "mtime": 1783342681.2128422,
+    "ast_hash": "7f8a03c53c4dd34f197aa96ade5b4f48",
+    "semantic_hash": ""
+  },
+  "src/field/nodes.js": {
+    "mtime": 1783935026.9701812,
+    "ast_hash": "c1e1c0ed71cd972f839bddf68f7728bf",
+    "semantic_hash": ""
+  },
+  "src/field/particles.js": {
+    "mtime": 1783342681.2128422,
+    "ast_hash": "b3ab499b72cf8cc3abf9f8f6a6cb5857",
+    "semantic_hash": ""
+  },
+  "src/legal.js": {
+    "mtime": 1783935026.9701812,
+    "ast_hash": "06887f69c1ccabe17665a7ca57b66e04",
+    "semantic_hash": ""
+  },
+  "src/main.js": {
+    "mtime": 1783935960.6046169,
+    "ast_hash": "9892e9fda1a939574d7bb5f80c5e989f",
+    "semantic_hash": ""
+  },
+  "src/modules/env.js": {
+    "mtime": 1783342681.2128422,
+    "ast_hash": "3f0247326b4b4b921b2ee93178ac601a",
+    "semantic_hash": ""
+  },
+  "src/modules/frame.js": {
+    "mtime": 1783935860.540563,
+    "ast_hash": "6a8b7e205d3d1fece54b0a572f41d4cf",
+    "semantic_hash": ""
+  },
+  "src/modules/nav.js": {
+    "mtime": 1783935026.9784143,
+    "ast_hash": "2d3c7e60583b7aa1532ad1bdda561312",
+    "semantic_hash": ""
+  },
+  "src/modules/panel.js": {
+    "mtime": 1783935955.2162714,
+    "ast_hash": "563452ce2e4b4778b707879ce5aa1976",
+    "semantic_hash": ""
+  },
+  "src/modules/projects.js": {
+    "mtime": 1783935941.1814775,
+    "ast_hash": "031139bba563ea2c8209ab52b7b7c234",
+    "semantic_hash": ""
+  },
+  "src/modules/scroll.js": {
+    "mtime": 1783935898.3977368,
+    "ast_hash": "31c3f794c5c422443ac342aa4ad3c35c",
+    "semantic_hash": ""
+  },
+  "src/modules/sections.js": {
+    "mtime": 1783937096.4312727,
+    "ast_hash": "2265b80b49578c54336a8e023742821a",
+    "semantic_hash": ""
+  },
+  "src/modules/typo.js": {
+    "mtime": 1783935026.9804208,
+    "ast_hash": "ca44ad9679489f60738654ef7541cd8d",
+    "semantic_hash": ""
+  },
+  "src/utils/dom.js": {
+    "mtime": 1783342681.2286239,
+    "ast_hash": "6439772f773055cd2aac0002299e9363",
+    "semantic_hash": ""
+  },
+  "src/utils/scramble.js": {
+    "mtime": 1783342681.2286239,
+    "ast_hash": "40ddc929ad31089fcb146257d3f12c67",
+    "semantic_hash": ""
+  },
+  "vite.config.js": {
+    "mtime": 1783342681.2286239,
+    "ast_hash": "32486eec3c31498058dd55553507b97e",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1783935026.962783,
+    "ast_hash": "1a829a981e392757ef8bca9e4af34d24",
+    "semantic_hash": ""
+  },
+  "datenschutz.html": {
+    "mtime": 1783936006.3423188,
+    "ast_hash": "130da12fb2d38ad16275a49c27bd36a7",
+    "semantic_hash": ""
+  },
+  "impressum.html": {
+    "mtime": 1783935972.388391,
+    "ast_hash": "515abec29f854becd3f498b0d67ebdd1",
+    "semantic_hash": ""
+  },
+  "index.html": {
+    "mtime": 1783936443.4084692,
+    "ast_hash": "e34b359c4db22761e3bea2fee171bc0e",
+    "semantic_hash": ""
+  },
+  "public/robots.txt": {
+    "mtime": 1783342681.1971498,
+    "ast_hash": "987497bfb623e1059632e5a607d56454",
+    "semantic_hash": ""
+  },
+  "public/favicon.svg": {
+    "mtime": 1783342681.1971498,
+    "ast_hash": "ee9cc7986869893a9c352cf484c93cab",
+    "semantic_hash": ""
+  },
+  "public/nr-avatar.png": {
+    "mtime": 1783342681.1971498,
+    "ast_hash": "2870d37065bf4a98f49dff71880378b7",
+    "semantic_hash": ""
+  }
+}

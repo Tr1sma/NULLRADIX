@@ -3,6 +3,12 @@ import { qs, el } from '../utils/dom.js';
 import { projects } from '../data/content.js';
 import { env } from './env.js';
 
+/** `(−28, +68)` - the project's plotted position, mirrored into the list. */
+export const fmtCoord = (c) => {
+  const f = (v) => (v < 0 ? '−' : '+') + String(Math.abs(Math.round(v))).padStart(2, '0');
+  return `(${f(c?.x ?? 0)}, ${f(c?.y ?? 0)})`;
+};
+
 /** Build the accessible work list + a sharp marker that glides between rows. */
 export function renderProjects(panel) {
   const list = qs('[data-projects]');
@@ -21,6 +27,7 @@ export function renderProjects(panel) {
     const meta = el('div', { class: 'work-item__meta' }, [
       p.status ? el('span', { class: 'status' }, p.status) : null,
       el('span', {}, String(p.year)),
+      el('span', { class: 'work-item__coord', 'aria-hidden': 'true' }, fmtCoord(p.coord)),
     ]);
 
     const item = el('li', { class: 'work-item' }, [
