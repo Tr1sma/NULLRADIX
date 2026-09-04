@@ -172,12 +172,12 @@ export const experience = [
     tech: ["Scratch", "Java", "C", "C++", "Win32"],
   },
   {
-    org: "Vocational Training",
+    org: "4SELLERS",
     role: "IT Specialist - Application Development",
     from: "2024",
     to: "Present",
     summary:
-      "Apprenticeship as Fachinformatiker für Anwendungsentwicklung - designing, building and maintaining software end to end.",
+      "Apprenticeship as Fachinformatiker für Anwendungsentwicklung - designing, building and maintaining ERP and web software end to end.",
     tech: ["C#", ".NET", "SQL"],
   },
   {
@@ -195,7 +195,7 @@ export const experience = [
     from: "2026",
     to: "Present",
     summary:
-      "Lead development on ModernV - setting technical direction, reviewing contributions and owning architecture across gameplay systems, internal tooling and the live database.",
+      "Set technical direction, review contributions and own architecture across gameplay systems, internal tooling and the live database.",
     tech: ["Lua", "JavaScript", "HTML/CSS", "C#", ".NET", "Blazor", "MySQL"],
   },
   {
