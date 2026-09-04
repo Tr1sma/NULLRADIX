@@ -182,7 +182,7 @@ export const experience = [
   },
   {
     org: "ModernV",
-    role: "Head Developer",
+    role: "Lead Development",
     from: "2025",
     to: "Present",
     summary:
