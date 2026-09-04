@@ -163,7 +163,7 @@ export const skills = [
 /** @type {{org:string, role:string, from:string, to:string, summary:string, tech?:string[]}[]} */
 export const experience = [
   {
-    org: "The Start of my Programming Career",
+    org: "Self-taught",
     role: "Hobbyist",
     from: "2014",
     to: "2024",
@@ -186,7 +186,7 @@ export const experience = [
     from: "2025",
     to: "2026",
     summary:
-      "Build real-time tools for ModernV, a GTA roleplay server - including NOOSE, an audited, role-based case database for an in-game law-enforcement faction.",
+      "Built real-time tools for ModernV, a GTA roleplay server - including NOOSE, an audited, role-based case database for an in-game law-enforcement faction.",
     tech: ["Lua", "JavaScript", "HTML/CSS", "C#", ".NET", "Blazor", "MySQL"],
   },
   {
@@ -204,7 +204,7 @@ export const experience = [
     from: "2026",
     to: "Present",
     summary:
-      "Take commissions for custom FiveM scripts, .NET backends & REST APIs, Blazor / ASP.NET web apps and cross-platform mobile apps.",
+      "Take commissions for custom FiveM scripts, .NET backends and REST APIs, Blazor / ASP.NET web apps and cross-platform mobile apps.",
     tech: ["FiveM", ".NET", "Blazor", "MAUI"],
   },
 ];
