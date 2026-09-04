@@ -182,11 +182,20 @@ export const experience = [
   },
   {
     org: "ModernV",
-    role: "Lead Development",
+    role: "Developer",
     from: "2025",
-    to: "Present",
+    to: "2026",
     summary:
       "Build real-time tools for ModernV, a GTA roleplay server - including NOOSE, an audited, role-based case database for an in-game law-enforcement faction.",
+    tech: ["Lua", "JavaScript", "HTML/CSS", "C#", ".NET", "Blazor", "MySQL"],
+  },
+  {
+    org: "ModernV",
+    role: "Lead Developer",
+    from: "2026",
+    to: "Present",
+    summary:
+      "Lead development on ModernV - setting technical direction, reviewing contributions and owning architecture across gameplay systems, internal tooling and the live database.",
     tech: ["Lua", "JavaScript", "HTML/CSS", "C#", ".NET", "Blazor", "MySQL"],
   },
   {
